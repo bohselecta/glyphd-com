@@ -51,7 +51,7 @@ export const MakeButton = React.forwardRef<HTMLButtonElement, Props>(
 
           {/* send icon */}
           <g
-            transform="translate(20,14) scale(0.25) translate(-77, -55)"
+            transform="translate(20,14) scale(0.10) translate(-77, -55)"
             filter={`url(#glow-make-${gid})`}
           >
             <path
