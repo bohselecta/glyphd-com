@@ -26,7 +26,7 @@ export async function createClient() {
             // Handle error
           }
         },
-      },
+      } as any,
     }
   )
 }
