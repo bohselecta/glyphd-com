@@ -16,6 +16,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["../../packages/core/*"],
+      "@ai/*": ["../../packages/ai/*"],
+      "@schemas/*": ["../../packages/schemas/*"],
+      "@designer/*": ["../../packages/designer/*"],
+      "@deployer/*": ["../../packages/deployer/*"],
+      "@utils/*": ["../../packages/utils/*"],
+      "@config/*": ["../../packages/config/*"]
+    },
     "plugins": [
       {
         "name": "next"
