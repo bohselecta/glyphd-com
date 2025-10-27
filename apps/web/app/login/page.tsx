@@ -75,6 +75,39 @@ export default function LoginPage() {
           </button>
         </form>
         
+        {/* Demo Login */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-white/10"></div>
+          </div>
+          <div className="relative flex justify-center text-ui text-text-muted">
+            <span className="bg-[#0B0C10] px-4">or</span>
+          </div>
+        </div>
+        
+        <button 
+          onClick={async () => {
+            setLoading(true)
+            try {
+              const res = await fetch('/api/auth/demo', { method: 'POST' })
+              const data = await res.json()
+              if (data.ok) {
+                router.push('/dashboard')
+              } else {
+                setMessage(data.error || 'Demo login failed')
+              }
+            } catch (e: any) {
+              setMessage(e.message)
+            } finally {
+              setLoading(false)
+            }
+          }}
+          disabled={loading}
+          className="w-full bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl px-4 py-3 text-ui text-text-primary font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {loading ? 'Loading...' : '👤 Continue as Demo User'}
+        </button>
+        
         <div className="text-center text-ui text-text-secondary">
           <a href="/signup" className="hover:text-accent-cyan">Don't have an account? Sign up</a>
         </div>

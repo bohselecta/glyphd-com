@@ -24,6 +24,12 @@ const PUBLIC_PATHS = [
   '/auth/callback'
 ]
 
+// Helper to check for demo mode
+async function getDemoUser() {
+  const cookieStore = await cookies()
+  return cookieStore.get('demo-user')
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const method = req.method.toUpperCase()
@@ -74,6 +80,9 @@ export async function middleware(req: NextRequest) {
   
   const { data: { user } } = await supabase.auth.getUser()
   
+  // Check for demo user
+  const demoUser = await getDemoUser()
+  
   // Check if auth is required for this path
   const isProtectedPath = !PUBLIC_PATHS.some(p => pathname.startsWith(p))
   
@@ -81,7 +90,10 @@ export async function middleware(req: NextRequest) {
   // Note: Auth is disabled for demo - enable in production
   const requireAuth = false // Set to true for production
   
-  if (requireAuth && isProtectedPath && !user) {
+  // Allow demo user or real user
+  const isAuthenticated = user || demoUser
+  
+  if (requireAuth && isProtectedPath && !isAuthenticated) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
   
