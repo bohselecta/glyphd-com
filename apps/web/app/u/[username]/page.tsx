@@ -1,15 +1,49 @@
 'use client'
-import { use } from 'react'
-import { getBuilderPoints, calculateReputation } from '@core/builder_points'
+import { use, useState, useEffect } from 'react'
 
 interface ProfileProps {
   params: Promise<{ username: string }>
 }
 
+interface BuilderData {
+  points: number
+  likes: number
+  comments: number
+  merges: number
+  acceptedCollabs: number
+  featured: number
+  abandoned: number
+}
+
 export default function ProfilePage({ params }: ProfileProps) {
   const { username } = use(params)
-  const data = getBuilderPoints(username)
-  const reputation = calculateReputation(data)
+  const [data, setData] = useState<BuilderData>({
+    points: 0,
+    likes: 0,
+    comments: 0,
+    merges: 0,
+    acceptedCollabs: 0,
+    featured: 0,
+    abandoned: 0
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const res = await fetch(`/api/user/${username}`)
+        const json = await res.json()
+        if (json.points) setData(json.points)
+      } catch (e) {
+        console.error('Failed to load builder data:', e)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadData()
+  }, [username])
+
+  const reputation = data.points || 0
 
   return (
     <main className="min-h-dvh p-6">
