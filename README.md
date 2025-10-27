@@ -1,160 +1,100 @@
-Glyphd — Make Your Mark
+# Glyphd — Make Your Mark
 
 AI-powered symbol builder for creative apps, brands, and products.
-Glyphd transforms user prompts into deployable web experiences — complete with generated assets, metadata, JSON-LD schema, and Vercel deployment.
 
-🚀 Quick Start
+## Quick Start
 
 ```bash
+# Install dependencies
 cd apps/web
 npm install
 
-# Configure API keys
-cp keys/keys.json.example keys/keys.json
-# Edit keys/keys.json with your API keys
+# Run locally
+npm run dev
 
-npm run dev   # http://localhost:5173
+# Visit http://localhost:5173
 ```
 
-📦 **Deployment**: See `DEPLOYMENT.md` for deployment instructions.
+## Deployment to Vercel
 
-🧠 Core Concept
+### Requirements
+- Node.js 18+ 
+- Vercel account
 
-“A Symbol is a living blueprint — a full app, page, or product built from intent.”
+### Setup Steps
 
-When you describe an idea, Glyphd:
+1. **Clone repository**
+```bash
+git clone https://github.com/bohselecta/glyphd-com.git
+cd glyphd-com
+```
 
-Parses intent using Z.ai models
+2. **Install dependencies**
+```bash
+cd apps/web
+npm install
+```
 
-Maps it to known schema types (Product, Service, CreativeWork, etc.)
+3. **Configure Vercel**
+   - Connect GitHub repo to Vercel
+   - **Set Root Directory:** `apps/web`
+   - Add environment variables:
+     - `IMAGE_GEN_API_KEY`
+     - `ZAI_API_KEY`
+     - `NEXT_PUBLIC_SUPABASE_URL` (optional)
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional)
 
-Generates copy, sections, and pricing
+4. **Deploy**
+   - Vercel will auto-deploy on push
+   - Or click "Deploy" in dashboard
 
-Synthesizes hero & asset images via DeepInfra (Flux-1-dev)
+## Project Structure
 
-Writes everything to /public/symbols/<slug>/
+```
+glyphd-com/
+├── apps/
+│   └── web/          # Next.js app (deploy this)
+├── packages/         # Shared modules
+│   ├── ai/          # AI integration
+│   ├── core/        # Builder engine
+│   └── deployer/    # File writer
+├── scripts/          # Utilities
+└── supabase/        # Database schema
 
-Injects valid JSON-LD for SEO & knowledge graph visibility
+```
 
-🧩 Features Overview
-1. Schema-Driven Symbol System
+## Features
 
-Each build includes automatically seeded JSON schema files:
-/public/symbols/<slug>/schemas/*.json
+- **Demo Mode** - Test without database setup
+- **Auth** - Supabase magic link authentication
+- **Builder** - AI-powered mark generation
+- **Feed** - Community showcase
+- **Real-time** - Collaboration features
 
-Supported types: Product, Offer, Service, Organization, Event, CreativeWork, LocalBusiness, etc.
+## Environment Variables
 
-Auto-validated and injected as JSON-LD in each Symbol page.
+For local development, create `apps/web/keys/keys.json`:
 
-2. Designer Console
+```json
+{
+  "IMAGE_GEN_API_KEY": "your-deepinfra-key",
+  "ZAI_API_KEY": "your-zai-key"
+}
+```
 
-/designer — turn natural language into structured data.
-Shows:
+For production on Vercel, add these in dashboard:
+- `IMAGE_GEN_API_KEY` - DeepInfra API key
+- `ZAI_API_KEY` - Z.ai API key
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anon key
 
-Suggested schema types
+## Documentation
 
-Matching UI components
+- [Setup Guide](./SETUP.md)
+- [Deployment](./DEPLOYMENT.md)
+- [Demo Mode](./DEMO_MODE.md)
+- [Auth Setup](./SUPABASE_AUTH_SETUP.md)
 
-Generated JSON-LD preview
+## License
 
-3. Symbol Management
-
-/s/[slug] — main live Symbol page
-
-/s/[slug]/edit — metadata & section editor
-
-/s/[slug]/configure — per-schema form editor
-
-/marketplace — searchable Symbol gallery
-
-4. In-App Preview & Management
-
-View live Symbols at `/s/[slug]`
-
-Configure schemas via `/s/[slug]/configure`
-
-Edit metadata at `/s/[slug]/edit`
-
-Generate additional assets on demand
-
-5. Asset Generation
-
-Uses black-forest-labs/FLUX-1-dev via DeepInfra
-
-Generates hero.png, logo_pack.png, icon.png, og.png
-
-🔐 API Keys Configuration
-
-Keys are stored in `keys/keys.json` (create from `keys/keys.json.example`):
-
-- **ZAI_API_KEY**: Z.ai API key for text generation
-- **IMAGE_GEN_API_KEY**: DeepInfra API key for image generation  
-
-You can also configure keys via the UI at `/settings/keys`
-
-🧱 Folder Structure
-apps/web/
- ├─ app/
- │   ├─ s/[slug]/page.tsx         # Symbol viewer w/ JSON-LD
- │   ├─ s/[slug]/edit/page.tsx    # Metadata editor
- │   ├─ s/[slug]/configure/       # Schema config UI
- │   ├─ designer/                 # Schema mapping console
- │   ├─ api/                      # Build, deploy, schema endpoints
- │
- ├─ public/symbols/
- │   └─ <slug>/
- │       ├─ hero.png
- │       ├─ metadata.json
- │       ├─ schema.json
- │       └─ schemas/
- │           └─ Product.json, Offer.json, etc.
- │
-packages/
- ├─ core/                         # builderEngine.ts, deployer
- ├─ designer/                     # mappingEngine.ts, promptTemplates.md
- ├─ schemas/                      # schemaRegistry.ts, jsonldTemplates.ts
- ├─ deployer/                     # fileWriter.ts, REST deploy logic
-docs/
- ├─ handoff-v9.md
- └─ symbol-schema.md
-
-💡 Developer Flow
-Step	Action	Result
-1	Enter idea	Mapped to schema types
-2	Copy & image generation	Headline, subtext, hero visuals
-3	JSON schema seeding	/schemas/*.json auto-filled
-4	Configure schema	GUI for Product, Service, etc.
-5	JSON-LD injection	Valid <script> in rendered page
-6	Deploy/export	Live symbol or standalone Next.js app
-🎨 Design Language
-
-Theme: Dark candy tech × desert nomad neon
-
-Palette: #FF2DAA (hot pink), #33FFF2 (aqua cyan), deep charcoal base
-
-Style: glassmorphism, clean typography, motion-ready layout
-
-🧭 Docs
-
-docs/handoff-v9.md — final architecture summary
-
-docs/symbol-schema.md — full schema reference
-
-docs/deploy-vercel-rest.md — Vercel REST flow
-
-docs/v8-notes.md, docs/v7-notes.md — version changelogs
-
-⚙️ Extending Glyphd
-
-Add new schema types in packages/schemas/schemaRegistry.ts
-
-Expand prompt heuristics in packages/designer/mappingEngine.ts
-
-Integrate new model endpoints in packages/core/builderEngine.ts
-
-Add custom UI layouts under /app/s/[slug]/
-
-🪩 Credits
-
-Built by Hayden @ glyphd.com
-Theme, concept, and architecture by Glyphd Labs — “Make your mark.”
+Private

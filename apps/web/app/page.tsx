@@ -71,18 +71,18 @@ export default function Home() {
       
       {/* Header */}
       <header className="border-b border-white/10 relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="glyphd" className="h-6" />
-          <nav className="flex items-center gap-4 text-sm">
-            <a href="/feed" className="text-neutral-400 hover:text-white">Feed</a>
-            <span className="text-neutral-600">|</span>
-            <a href="/pricing" className="text-neutral-400 hover:text-white">Pricing</a>
-            <span className="text-neutral-600">|</span>
-            <a href="/login" className="text-neutral-400 hover:text-white">Log In</a>
-            <span className="text-neutral-600">|</span>
-            <a href="/signup" className="text-neutral-400 hover:text-white">Sign Up</a>
-          </nav>
+            <nav className="flex items-center gap-4 text-sm">
+              <a href="/feed" className="text-neutral-400 hover:text-white">Feed</a>
+              <span className="text-neutral-600">|</span>
+              <a href="/pricing" className="text-neutral-400 hover:text-white">Pricing</a>
+              <span className="text-neutral-600">|</span>
+              <a href="/login" className="text-neutral-400 hover:text-white">Log In</a>
+              <span className="text-neutral-600">|</span>
+              <a href="/signup" className="text-neutral-400 hover:text-white">Sign Up</a>
+            </nav>
         </div>
       </header>
 
