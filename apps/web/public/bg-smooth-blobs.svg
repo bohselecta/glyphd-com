@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1024" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="60" />
+    </filter>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050A14"/>
+      <stop offset="100%" stop-color="#0A1730"/>
+    </linearGradient>
+    <radialGradient id="b1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#122C6B" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0A1730" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#1F1150" stop-opacity="0.80"/>
+      <stop offset="100%" stop-color="#0A1730" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#0E4A63" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#0A1730" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cya" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#33FFF2" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#0A1730" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mag" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#FF2DAA" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#0A1730" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig" cx="50%" cy="50%" r="75%">
+      <stop offset="60%" stop-color="rgba(0,0,0,0)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="1024" fill="url(#base)"/>
+  <g filter="url(#soft)">
+    <circle cx="260"  cy="180"  r="280" fill="url(#b1)"/>
+    <circle cx="1200" cy="220"  r="260" fill="url(#b2)"/>
+    <circle cx="980"  cy="780"  r="320" fill="url(#b3)"/>
+    <circle cx="420"  cy="760"  r="240" fill="url(#cya)"/>
+    <circle cx="1040" cy="520"  r="220" fill="url(#mag)"/>
+  </g>
+  <rect width="1440" height="1024" fill="url(#vig)"/>
+</svg>

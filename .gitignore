@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Keys and secrets
+keys/
+.env
+.env.local
+.env*.local
+
+# Testing
+coverage/
+
+# Production
+/build
+/dist
+/exports
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local files
+*.log
+
+# Next.js
+.next/
+apps/web/.next/
+out/
+
+# Build packs (exclude reference builds)
+glyphd-build-pack-v9/
+glyphd-build-pack-v10/
+glyphd-zai-hybrid-v10_1/
+glyphd-pricing-stripe-v10_2/
+glyphd-bg-pack/
+glyphd-logo.svg
+gummy-bubbles.svg
+icon-logo.svg
+
+# Temporary
+temp/
+tmp/
+.cache/

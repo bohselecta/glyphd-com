@@ -1,0 +1,2 @@
+export const LIMITS = { verification: { required: true }, free: { appsPerDay: 2, stepsPerAppPerDay: 8, imagesPerApp: 2, storageDays: 7, monthlyImagePool: 0, exportEnabled: false, watermark: true, }, creator: { appsPerDay: 10, stepsPerAppPerDay: 24, imagesPerApp: 8, storageDays: null, monthlyImagePool: 100, exportEnabled: true, watermark: false, }, hardStops: { monthlyImageMax: 200, monthlyStepMax: 20000, } } as const
+export type Tier = 'free' | 'creator'

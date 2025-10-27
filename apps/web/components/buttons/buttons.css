@@ -1,0 +1,43 @@
+/* Button component styles */
+button[aria-label] {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  max-width: 240px;
+}
+
+button[aria-label] svg {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Smaller on mobile */
+@media (max-width: 768px) {
+  button[aria-label] svg {
+    max-width: 100%;
+  }
+}
+
+/* Focus rings for keyboard navigation */
+button[aria-label]:focus-visible svg rect:first-of-type,
+button[aria-label]:focus-visible svg circle {
+  outline: 2px solid;
+  outline-offset: 3px;
+}
+
+button[aria-label*="Plan"]:focus-visible svg rect:first-of-type {
+  outline-color: rgba(255, 45, 170, 0.9);
+}
+
+button[aria-label*="Make"]:focus-visible svg rect:first-of-type {
+  outline-color: rgba(51, 255, 242, 0.85);
+}
+
+button[aria-label*="Send"]:focus-visible svg circle {
+  outline-color: rgba(51, 255, 242, 0.85);
+}
+

@@ -1,0 +1,4 @@
+import Stripe from 'stripe'
+import { NextResponse } from 'next/server'
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
+export async function POST(req: Request){ const { priceId, userId, email } = await req.json(); if(!priceId||!userId) return NextResponse.json({ok:false,message:'Missing priceId or userId'},{status:400}); const session = await stripe.checkout.sessions.create({ mode:'subscription', customer_email: email, line_items:[{price:priceId,quantity:1}], allow_promotion_codes:true, automatic_tax:{enabled:process.env.STRIPE_TAX_FEATURE==='on'}, subscription_data:{ metadata:{userId} }, metadata:{userId}, success_url:`${process.env.PUBLIC_BASE_URL}/account?status=success`, cancel_url:`${process.env.PUBLIC_BASE_URL}/pricing?status=cancel` }, { idempotencyKey: `${userId}:${priceId}:subscribe` }); return NextResponse.json({ ok:true, url: session.url }) }

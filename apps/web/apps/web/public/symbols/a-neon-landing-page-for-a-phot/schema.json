@@ -1,0 +1,80 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "#home"
+    },
+    {
+      "label": "Portfolio",
+      "href": "#portfolio"
+    },
+    {
+      "label": "About",
+      "href": "#about"
+    },
+    {
+      "label": "Services",
+      "href": "#services"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact"
+    }
+  ],
+  "features": [
+    {
+      "title": "Neon Vision Photography",
+      "desc": "Capturing moments with vibrant, electric energy that brings your memories to life in stunning detail."
+    },
+    {
+      "title": "Urban Glow Sessions",
+      "desc": "Night photography services that transform cityscapes into luminous masterpieces with expert lighting techniques."
+    },
+    {
+      "title": "Custom Retouching",
+      "desc": "Advanced editing that enhances your natural beauty while maintaining authentic, neon-inspired aesthetics."
+    },
+    {
+      "title": "Creative Direction",
+      "desc": "Collaborative photo shoots that bring your unique vision to life with innovative concepts and neon styling."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Starter Glow",
+      "price": "$300",
+      "features": [
+        "1-hour session",
+        "30 edited photos",
+        "Basic color enhancement",
+        "Digital delivery"
+      ]
+    },
+    {
+      "name": "Neon Pro",
+      "price": "$600",
+      "features": [
+        "3-hour session",
+        "80 edited photos",
+        "Advanced color grading",
+        "Print-ready files",
+        "Social media package"
+      ]
+    },
+    {
+      "name": "Nova Signature",
+      "price": "$1200",
+      "features": [
+        "Full-day session",
+        "150+ edited photos",
+        "Custom neon effects",
+        "Album design",
+        "Priority scheduling",
+        "24/7 client support"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "CreativeWork"
+  ]
+}

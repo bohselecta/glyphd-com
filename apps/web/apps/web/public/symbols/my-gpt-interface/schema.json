@@ -1,0 +1,84 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Features",
+      "href": "/features"
+    },
+    {
+      "label": "Pricing",
+      "href": "/pricing"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Download",
+      "href": "/download"
+    }
+  ],
+  "features": [
+    {
+      "title": "Mobile-First Interface",
+      "desc": "Optimized touch controls designed specifically for mobile interaction with AI."
+    },
+    {
+      "title": "Smart Dock",
+      "desc": "Customizable dock for quick access to tools, conversations, and shortcuts."
+    },
+    {
+      "title": "Dark Theme",
+      "desc": "Carefully crafted dark interface that reduces eye strain and enhances focus."
+    },
+    {
+      "title": "Seamless Sync",
+      "desc": "Your conversations sync across all devices with complete privacy."
+    },
+    {
+      "title": "Advanced AI",
+      "desc": "Access to cutting-edge language models for intelligent responses."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Free",
+      "price": "$0",
+      "features": [
+        "50 messages/day",
+        "Basic AI model",
+        "Standard dock",
+        "Dark theme"
+      ]
+    },
+    {
+      "name": "Premium",
+      "price": "$9.99/month",
+      "features": [
+        "Unlimited messages",
+        "Advanced AI model",
+        "Custom dock",
+        "Dark theme",
+        "Priority support"
+      ]
+    },
+    {
+      "name": "Pro",
+      "price": "$19.99/month",
+      "features": [
+        "Unlimited messages",
+        "Latest AI model",
+        "Full dock customization",
+        "Dark theme",
+        "API access",
+        "Dedicated support"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "CreativeWork"
+  ]
+}
