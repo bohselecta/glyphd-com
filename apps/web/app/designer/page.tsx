@@ -168,8 +168,19 @@ export default function PlannerPage() {
   }
 
   return (
-    <main className="min-h-dvh p-6">
-      <div className="max-w-5xl mx-auto space-y-6">
+    <main className="min-h-dvh relative">
+      {/* Background with vignette */}
+      <div className="fixed inset-0 -z-10">
+        <img 
+          src="/bg-smooth-blobs.svg" 
+          alt="" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-scrim-a"></div>
+      </div>
+      
+      <div className="p-6 relative z-10">
+        <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-semibold">Plan This Idea</h1>
@@ -411,6 +422,7 @@ export default function PlannerPage() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </main>
   )
