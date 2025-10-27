@@ -23,7 +23,8 @@ export interface FeedResponse {
 
 export type FeedSort = 'new' | 'trending' | 'featured'
 
-export function calculateTrendingScore(likes24h: number, comments24h: number, ageHrs: number): number {
+// Internal function for calculating trending scores
+function calculateTrendingScore(likes24h: number, comments24h: number, ageHrs: number): number {
   const raw = likes24h + 0.5 * comments24h
   const decay = 1 / (1 + 0.08 * ageHrs) // Gentle decay over ~12 hours
   return Math.round(1000 * raw * decay)
