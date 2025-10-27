@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     const og = await generateImage(apiKey, promptBase + ' Open Graph banner.', '1200x630', 'black-forest-labs/FLUX-1-dev')
     console.log('All images generated')
 
-    function writeImage(name:string, data:any) {
+    const writeImage = (name:string, data:any) => {
       const b64 = data?.data?.[0]?.b64_json
       if (b64) fs.writeFileSync(path.join(base, name), Buffer.from(b64, 'base64'))
     }
