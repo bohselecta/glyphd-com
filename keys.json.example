@@ -1,0 +1,7 @@
+{
+  "ZAI_API_KEY": "your-zai-api-key-here",
+  "IMAGE_GEN_API_KEY": "your-deepinfra-api-key-here",
+  "ZAI_BASE_URL": "https://api.z.ai",
+  "ZAI_PLAN_TYPE": "CODING_LITE"
+}
+
