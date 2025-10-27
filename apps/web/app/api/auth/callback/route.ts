@@ -1,35 +1,44 @@
-import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
+import { createClient } from '../../../lib/supabase/server'
 
-export async function GET(request: Request) {
-  const requestUrl = new URL(request.url)
+export async function GET(req: Request) {
+  const requestUrl = new URL(req.url)
   const code = requestUrl.searchParams.get('code')
-  const next = requestUrl.searchParams.get('next') || '/'
+  const next = requestUrl.searchParams.get('next') || '/dashboard'
 
   if (code) {
-    const cookieStore = await cookies()
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-          set(name: string, value: string, options: any) {
-            cookieStore.set({ name, value, ...options })
-          },
-          remove(name: string, options: any) {
-            cookieStore.set({ name, value: '', ...options })
-          },
-        },
-      }
-    )
+    const supabase = await createClient()
     
-    await supabase.auth.exchangeCodeForSession(code)
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (error) {
+      console.error('Auth callback error:', error)
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5173'}/login?error=auth_failed`
+      )
+    }
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+      
+      if (!existingProfile) {
+        await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            username: user.email?.split('@')[0] || `user_${user.id.slice(0, 8)}`
+          })
+      }
+    }
   }
 
-  return NextResponse.redirect(new URL(next, requestUrl.origin))
+  return NextResponse.redirect(
+    `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5173'}${next}`
+  )
 }
 
