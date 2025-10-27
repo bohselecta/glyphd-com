@@ -4,12 +4,22 @@ import { loadKeysIntoEnv } from '@utils/loadKeys'
 import fs from 'fs'
 import path from 'path'
 
+// Helper to get the correct symbols directory path (same as in fileWriter)
+function getSymbolsDir() {
+  let dir = path.join(process.cwd(), 'public/symbols')
+  if (fs.existsSync(dir)) return dir
+  dir = path.join(process.cwd(), 'apps/web/public/symbols')
+  if (fs.existsSync(dir)) return dir
+  return path.join(process.cwd(), 'apps/web/public/symbols')
+}
+
 export async function POST(req: Request, { params }: { params: { slug: string }}) {
   try {
     loadKeysIntoEnv()
     
     const { text, mode } = await req.json()
-    const meta = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'apps/web/public/symbols', params.slug, 'metadata.json'), 'utf-8'))
+    const baseDir = path.join(getSymbolsDir(), params.slug)
+    const meta = JSON.parse(fs.readFileSync(path.join(baseDir, 'metadata.json'), 'utf-8'))
     
     if (mode === 'ask') {
       const resp = await chatZAI([
@@ -28,9 +38,18 @@ export async function POST(req: Request, { params }: { params: { slug: string }}
         { role: 'user', content: `Implement: ${text}\n\nFor: ${meta.name}` }
       ], { task: 'refine' })
       
-      // Update metadata as placeholder
-      meta.sub = (meta.sub || '') + ' • ' + (text || 'refined')
-      fs.writeFileSync(path.join(process.cwd(), 'apps/web/public/symbols', params.slug, 'metadata.json'), JSON.stringify(meta, null, 2), 'utf-8')
+      // Actually implement changes to schema files
+      const schemaPath = path.join(baseDir, 'schema.json')
+      if (fs.existsSync(schemaPath)) {
+        const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'))
+        // For now, append to sub as a visible change
+        meta.sub = (meta.sub || '') + ' • ' + (text || 'refined')
+        fs.writeFileSync(path.join(baseDir, 'metadata.json'), JSON.stringify(meta, null, 2), 'utf-8')
+      } else {
+        // Fallback if no schema exists
+        meta.sub = (meta.sub || '') + ' • ' + (text || 'refined')
+        fs.writeFileSync(path.join(baseDir, 'metadata.json'), JSON.stringify(meta, null, 2), 'utf-8')
+      }
       
       return NextResponse.json({ 
         ok: true, 

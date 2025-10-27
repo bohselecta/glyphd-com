@@ -28,12 +28,12 @@ export default function BuildPage() {
     // Simulated build steps
     const steps = [
       'Mapping schemas...',
-      'Calling Z.ai for copy...',
+      'Calling AI for copy...',
       'Generating copy...',
       'Synthesizing image prompt...',
-      'Calling DeepInfra image gen...',
+      'Calling Image Generator...',
       'Generating hero image...',
-      'Calling Z.ai for sections...',
+      'Calling AI for sections...',
       'Creating sections...',
       'Writing files...',
       'Saving schema templates...',

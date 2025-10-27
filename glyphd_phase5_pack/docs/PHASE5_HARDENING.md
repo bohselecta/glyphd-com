@@ -1,0 +1,1 @@
+# Phase 5 — Hardening & Scale\n\n- Auth & CSRF\n- Realtime hooks\n- Rate limits\n- Comments/Follow endpoints\n- Cron jobs\n- SQL indices\n

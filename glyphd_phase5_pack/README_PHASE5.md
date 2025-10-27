@@ -1,0 +1,1 @@
+# Glyphd — Phase 5 Hardening Pack\n\nDrop into your repo. Replace stubs with real DB/auth.\n

@@ -2,9 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-body { @apply bg-[#0B0C10] text-neutral-200; }
-.glass { @apply bg-[rgba(255,255,255,0.06)] backdrop-blur-[2px] border border-white/10 rounded-2xl shadow-lg; }
+:root {
+  --font-inter: var(--font-inter);
+  --font-mono: var(--font-mono);
+  --text-primary: #E6F1FF;
+  --text-secondary: #9FB3C8;
+  --text-muted: #6C7A89;
+  --accent-pink: #FF2DAA;
+  --accent-cyan: #33FFF2;
+  color-scheme: dark;
+}
 
-.btn-primary { @apply px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 disabled:opacity-50; }
-.brand-grad { background: linear-gradient(120deg, #FF2DAA, #33FFF2); -webkit-background-clip: text; color: transparent; }
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  background: #0B0C10;
+  line-height: 1.6;
+}
+
+.code, code, pre, kbd, samp {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-variant-ligatures: none;
+}
+
+.glass { 
+  @apply bg-[rgba(255,255,255,0.06)] backdrop-blur-[2px] border border-white/10 rounded-2xl shadow-lg; 
+}
+
+.btn-primary { 
+  @apply px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 disabled:opacity-50; 
+}
+
+.brand-grad { 
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan)); 
+  -webkit-background-clip: text; 
+  background-clip: text; 
+  color: transparent; 
+}
+
+/* Link styles */
+a {
+  color: #7DFCF5;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #33FFF2;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Typography utilities */
+.text-text-primary { color: var(--text-primary); }
+.text-text-secondary { color: var(--text-secondary); }
+.text-text-muted { color: var(--text-muted); }
+.text-accent-pink { color: var(--accent-pink); }
+.text-accent-cyan { color: var(--accent-cyan); }

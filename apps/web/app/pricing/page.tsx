@@ -58,15 +58,15 @@ export default function Pricing() {
       <div className="p-6 relative z-10">
         <div className="max-w-5xl mx-auto space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold">Pricing</h1>
-          <p className="text-neutral-400">Choose the plan that fits your needs</p>
+          <h1 className="text-h1 font-semibold text-text-primary">Pricing</h1>
+          <p className="text-text-secondary text-ui">Choose the plan that fits your needs</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Free Tier */}
           <div className="rounded-2xl p-6 border border-white/10 bg-white/5">
-            <h2 className="text-xl font-semibold mb-2">Free — Maker Trial</h2>
-            <p className="text-sm text-neutral-400 mb-4">
+            <h2 className="text-h3 font-semibold mb-2 text-text-primary">Free — Maker Trial</h2>
+            <p className="text-ui text-text-muted mb-4">
               2 apps/day • 8 edits/app • 2 images/app • 7‑day hosting • one‑time phone check
             </p>
             <button 
@@ -79,11 +79,11 @@ export default function Pricing() {
 
           {/* Creator Tier */}
           <div className="rounded-2xl p-6 border border-white/10 bg-white/10 relative">
-            <div className="absolute top-4 right-4 px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded">
+            <div className="absolute top-4 right-4 px-2 py-1 bg-accent-cyan/20 text-accent-cyan text-caption rounded">
               POPULAR
             </div>
-            <h2 className="text-xl font-semibold mb-2">Creator — $6/mo</h2>
-            <p className="text-sm text-neutral-400 mb-4">
+            <h2 className="text-h3 font-semibold mb-2 text-text-primary">Creator — $6/mo</h2>
+            <p className="text-ui text-text-muted mb-4">
               10 apps/day • 24 edits/app • 8 images/app • 100 images/mo • export & deploy • no watermark
             </p>
             <div className="flex gap-2">
@@ -107,11 +107,11 @@ export default function Pricing() {
 
         {/* Features comparison */}
         <div className="glass p-6 rounded-2xl">
-          <h3 className="text-lg font-semibold mb-4">What's Included</h3>
+          <h3 className="text-h3 font-semibold mb-4 text-text-primary">What's Included</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <h4 className="font-medium mb-2">Free Plan</h4>
-              <ul className="text-sm text-neutral-400 space-y-1">
+              <h4 className="font-medium mb-2 text-text-primary">Free Plan</h4>
+              <ul className="text-ui text-text-muted space-y-1">
                 <li>✓ 2 apps per day</li>
                 <li>✓ 8 build steps per app</li>
                 <li>✓ 2 images per app</li>
@@ -120,8 +120,8 @@ export default function Pricing() {
               </ul>
             </div>
             <div>
-              <h4 className="font-medium mb-2">Creator Plan</h4>
-              <ul className="text-sm text-neutral-400 space-y-1">
+              <h4 className="font-medium mb-2 text-text-primary">Creator Plan</h4>
+              <ul className="text-ui text-text-muted space-y-1">
                 <li>✓ 10 apps per day</li>
                 <li>✓ 24 build steps per app</li>
                 <li>✓ 8 images per app</li>

@@ -1,0 +1,99 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Portfolio",
+      "href": "/gallery"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Locations",
+      "href": "/walls"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "features": [
+    {
+      "title": "Interactive Map",
+      "desc": "Discover street art locations worldwide with our interactive map"
+    },
+    {
+      "title": "Process Gallery",
+      "desc": "Watch the transformation from concept to completed mural"
+    },
+    {
+      "title": "Artist Journal",
+      "desc": "Read stories behind the artwork and urban inspiration"
+    },
+    {
+      "title": "Print Shop",
+      "desc": "Purchase high-quality prints of iconic street pieces"
+    },
+    {
+      "title": "Commission Info",
+      "desc": "Details on requesting custom murals and collaborations"
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Limited Edition Prints",
+      "price": "$75-$300",
+      "features": [
+        "Various sizes",
+        "Certificate of authenticity",
+        "Urban packaging"
+      ]
+    },
+    {
+      "name": "Original Artifacts",
+      "price": "$800-$8,000",
+      "features": [
+        "Street fragments",
+        "Documentation",
+        "Provenance certificate"
+      ]
+    },
+    {
+      "name": "Mural Commissions",
+      "price": "Custom Quote",
+      "features": [
+        "Site visit",
+        "Design process",
+        "Materials",
+        "Documentation"
+      ]
+    },
+    {
+      "name": "Brand Collaborations",
+      "price": "Custom Quote",
+      "features": [
+        "Custom designs",
+        "Social promotion",
+        "Events",
+        "Merch"
+      ]
+    },
+    {
+      "name": "Digital Downloads",
+      "price": "$15-$75",
+      "features": [
+        "High-res files",
+        "Personal license",
+        "Instant access"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "CreativeWork",
+    "Project"
+  ]
+}

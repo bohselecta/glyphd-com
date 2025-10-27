@@ -4,6 +4,10 @@ const path = require('path')
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [],
+  // Vercel timeout configuration
+  experimental: {
+    workerThreads: false,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

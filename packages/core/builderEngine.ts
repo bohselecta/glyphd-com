@@ -43,7 +43,7 @@ export async function composeAndBuild(prompt: string, symbolName: string, model=
     logs.push('Mapped intent → schemas: ' + mapping.schemas.join(', '))
 
     // 1) Copy via Z.ai
-    logs.push('Calling Z.ai for copy…')
+    logs.push('Calling AI for copy…')
     const copyResp = await chatZAI(
       [
         { role: 'system', content: 'Return ONLY valid JSON with keys: headline, sub.' },
@@ -71,7 +71,7 @@ export async function composeAndBuild(prompt: string, symbolName: string, model=
     // 2) Image
     logs.push('Synthesizing image prompt…')
     const promptImg = craftImagePrompt(prompt)
-    logs.push(`Calling DeepInfra image gen: ${model} @ ${size}…`)
+    logs.push(`Calling Image Generator: ${model} @ ${size}…`)
     const img = await generateImage(process.env.IMAGE_GEN_API_KEY || '', promptImg, size, model)
     const heroImage = (img?.data?.[0]?.url || img?.data?.[0]?.b64_json)
       ? { url: img.data[0].url, b64: img.data[0].b64_json }
@@ -79,7 +79,7 @@ export async function composeAndBuild(prompt: string, symbolName: string, model=
     logs.push('Image generated')
 
     // 3) Sections & pricing
-    logs.push('Calling Z.ai for sections & pricing…')
+    logs.push('Calling AI for sections & pricing…')
     const resp2 = await chatZAI(
       [
         { role: 'system', content: 'Return ONLY valid JSON with keys: nav (array of {label,href}), features (array of {title,desc}), pricing (array of {name,price,features[]}). Keep it concise and brand-aligned.' },

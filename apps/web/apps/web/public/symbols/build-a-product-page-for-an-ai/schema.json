@@ -1,0 +1,98 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Features",
+      "href": "/features"
+    },
+    {
+      "label": "Pricing",
+      "href": "/pricing"
+    },
+    {
+      "label": "Use Cases",
+      "href": "/use-cases"
+    },
+    {
+      "label": "Resources",
+      "href": "/resources"
+    },
+    {
+      "label": "Sign In",
+      "href": "/login"
+    },
+    {
+      "label": "Get Started",
+      "href": "/signup"
+    }
+  ],
+  "features": [
+    {
+      "title": "AI Content Generation",
+      "desc": "Create high-quality articles, blog posts, and marketing copy in seconds with our advanced language model."
+    },
+    {
+      "title": "Grammar & Style Enhancement",
+      "desc": "Polish your writing with real-time grammar checks, style suggestions, and tone adjustments."
+    },
+    {
+      "title": "SEO Optimization",
+      "desc": "Improve your search rankings with keyword suggestions, readability scores, and SEO optimization tools."
+    },
+    {
+      "title": "Multiple Writing Styles",
+      "desc": "Adapt your content for different audiences with customizable writing styles and voice options."
+    },
+    {
+      "title": "Plagiarism Detection",
+      "desc": "Ensure originality with advanced plagiarism detection across billions of web pages and publications."
+    },
+    {
+      "title": "Collaboration Hub",
+      "desc": "Work seamlessly with your team through shared workspaces, real-time editing, and version control."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Free",
+      "price": "$0",
+      "features": [
+        "500 words per month",
+        "Basic grammar checking",
+        "3 writing styles",
+        "Community support"
+      ]
+    },
+    {
+      "name": "Pro",
+      "price": "$29/month",
+      "features": [
+        "Unlimited words",
+        "Advanced grammar & style",
+        "10+ writing styles",
+        "SEO optimization",
+        "Priority support",
+        "API access"
+      ]
+    },
+    {
+      "name": "Business",
+      "price": "$99/month",
+      "features": [
+        "Everything in Pro",
+        "Team collaboration",
+        "Custom brand voices",
+        "Plagiarism detection",
+        "Advanced analytics",
+        "Dedicated account manager"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "Product",
+    "Offer"
+  ]
+}

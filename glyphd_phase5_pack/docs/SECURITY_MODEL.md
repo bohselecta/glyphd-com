@@ -1,0 +1,1 @@
+# Security Model\n- JWT auth in middleware\n- CSRF on POST\n- RLS policies in DB\n- Security headers\n

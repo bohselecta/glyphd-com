@@ -13,8 +13,18 @@ export function ensureDir(p: string) {
   fs.mkdirSync(p, { recursive: true })
 }
 
+// Helper to get the correct symbols directory path
+function getSymbolsDir() {
+  let dir = path.join(process.cwd(), 'public/symbols')
+  if (fs.existsSync(dir)) return dir
+  dir = path.join(process.cwd(), 'apps/web/public/symbols')
+  if (fs.existsSync(dir)) return dir
+  // Create the first one if none exist
+  return path.join(process.cwd(), 'apps/web/public/symbols')
+}
+
 export async function ensureSchemaDir(slug: string) {
-  const base = path.join(process.cwd(), 'apps/web/public/symbols', slug, 'schemas')
+  const base = path.join(getSymbolsDir(), slug, 'schemas')
   ensureDir(base)
 }
 
@@ -46,7 +56,7 @@ export async function fetchToFile(url: string, baseDir: string): Promise<void> {
 // Support both Symbols and Marks
 export async function writeSymbolFiles(symbolName: string, copy: any, img: {url?: string, b64?: string} | undefined) {
   const slug = slugify(symbolName)
-  const baseDir = path.join(process.cwd(), 'apps/web/public/symbols', slug)
+  const baseDir = path.join(getSymbolsDir(), slug)
   ensureDir(baseDir)
 
   // Write metadata
@@ -96,8 +106,16 @@ export async function writeSymbolFiles(symbolName: string, copy: any, img: {url?
 
 export async function writeMarkFiles(name: string, copy: any, img?: {b64?: string, url?: string}) {
   const slug = slugify(name)
-  const base = path.join(process.cwd(), 'apps/web/public/symbols', slug)
+  const base = path.join(getSymbolsDir(), slug)
   ensureDir(base)
+  
+  // Write image if provided
+  if (img?.b64) {
+    const b = Buffer.from(img.b64, 'base64')
+    writeBufferTo(base, b)
+  } else if (img?.url) {
+    try { await fetchToFile(img.url, base) } catch { /* ignore */ }
+  }
   
   const meta = { 
     name, slug, 
@@ -118,19 +136,19 @@ export async function writeMarkFiles(name: string, copy: any, img?: {b64?: strin
 }
 
 export async function writeMarkSchema(slug: string, schema: any) {
-  const dir = path.join(process.cwd(), 'apps/web/public/symbols', slug)
+  const dir = path.join(getSymbolsDir(), slug)
   ensureDir(dir)
   fs.writeFileSync(path.join(dir, 'schema.json'), JSON.stringify(schema || {}, null, 2), 'utf-8')
 }
 
 export async function writeSymbolSchema(slug: string, schema: any) {
-  const baseDir = path.join(process.cwd(), 'apps/web/public/symbols', slug)
+  const baseDir = path.join(getSymbolsDir(), slug)
   ensureDir(baseDir)
   fs.writeFileSync(path.join(baseDir, 'schema.json'), JSON.stringify(schema || {}, null, 2), 'utf-8')
 }
 
 export async function writeSchemaEntry(slug: string, type: string, data: any) {
-  const dir = path.join(process.cwd(), 'apps/web/public/symbols', slug, 'schemas')
+  const dir = path.join(getSymbolsDir(), slug, 'schemas')
   ensureDir(dir)
   fs.writeFileSync(path.join(dir, `${type}.json`), JSON.stringify(data || {}, null, 2), 'utf-8')
 }

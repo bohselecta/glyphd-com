@@ -28,9 +28,8 @@ export const PlanButton = React.forwardRef<HTMLButtonElement, Props>(
           viewBox="0 0 240 48"
           xmlns="http://www.w3.org/2000/svg"
           role="img"
-          aria-labelledby={`planTitle-${gid}`}
+          aria-label={`${label} button`}
         >
-          <title id={`planTitle-${gid}`}>{label} button</title>
           <defs>
             <linearGradient id={`g-plan-${gid}`} x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#FF2DAA" />

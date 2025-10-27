@@ -51,7 +51,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
       // Load persisted session
       loadSession()
     }
-  }, [isOpen])
+  }, [isOpen, slug])
 
   useEffect(() => {
     scrollToBottom()
@@ -89,83 +89,124 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
     try {
       const res = await fetch(`/api/marks/${slug}/dock/state`)
       const data = await res.json()
-      if (data.ok && data.session) {
+      if (data.ok && data.session && data.session.messages) {
         setSession(data.session)
       }
-    } catch {}
+    } catch (err) {
+      console.error('Failed to load session:', err)
+    }
   }
 
   async function sendMessage() {
     if (!input.trim() || session.status === 'implementing') return
 
+    const userInput = input
+    const currentMode = session.mode
+
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
-      modeAtSend: session.mode,
-      text: input,
+      modeAtSend: currentMode,
+      text: userInput,
       createdAt: new Date().toISOString()
     }
 
     setInput('')
-    setSession(prev => ({ ...prev, messages: [...prev.messages, userMsg] }))
-    setSession(prev => ({ ...prev, status: 'analyzing' }))
+    setSession(prev => ({ ...prev, messages: [...prev.messages, userMsg], status: 'analyzing' }))
 
     try {
       const res = await fetch(`/api/marks/${slug}/dock/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: input, mode: session.mode })
+        body: JSON.stringify({ text: userInput, mode: currentMode })
       })
       const data = await res.json()
 
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        modeAtSend: session.mode,
+        modeAtSend: currentMode,
         text: data.message || 'Done.',
         createdAt: new Date().toISOString(),
-        annotations: { badge: session.mode === 'code' ? 'CODE' : 'ASK' }
+        annotations: { badge: currentMode === 'code' ? 'CODE' : 'ASK' }
       }
 
-      setSession(prev => ({
-        ...prev,
-        messages: [...prev.messages, aiMsg],
-        status: session.mode === 'code' ? 'implementing' : 'complete'
-      }))
+      setSession(prev => {
+        const updated = {
+          ...prev,
+          messages: [...prev.messages, aiMsg],
+          status: currentMode === 'code' ? 'implementing' : 'complete'
+        }
+        
+        // Persist after updating with AI response
+        fetch(`/api/marks/${slug}/dock/state`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session: updated })
+        }).catch(() => {})
+        
+        return updated
+      })
 
       // If Code mode, set complete after a moment
-      if (session.mode === 'code') {
+      if (currentMode === 'code') {
         setTimeout(() => {
-          setSession(prev => ({ ...prev, status: 'complete' }))
+          setSession(prev => {
+            const updated = { ...prev, status: 'complete' }
+            fetch(`/api/marks/${slug}/dock/state`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ session: updated })
+            }).catch(() => {})
+            return updated
+          })
           setTimeout(() => {
-            setSession(prev => ({ ...prev, status: 'idle' }))
-            // Refresh the page to show changes
-            window.location.reload()
+            setSession(prev => {
+              const updated = { ...prev, status: 'idle' }
+              // Persist final state before refresh
+              fetch(`/api/marks/${slug}/dock/state`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ session: updated })
+              }).catch(() => {})
+              // Refresh the page to show changes
+              setTimeout(() => window.location.reload(), 300)
+              return updated
+            })
           }, 1500)
         }, 500)
       } else {
-        setSession(prev => ({ ...prev, status: 'idle' }))
+        setSession(prev => {
+          const updated = { ...prev, status: 'idle' }
+          fetch(`/api/marks/${slug}/dock/state`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session: updated })
+          }).catch(() => {})
+          return updated
+        })
       }
-
-      // Persist
-      await fetch(`/api/marks/${slug}/dock/state`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ session })
-      })
     } catch (err: any) {
       const errorMsg: Message = {
         id: (Date.now() + 2).toString(),
         role: 'assistant',
-        modeAtSend: session.mode,
+        modeAtSend: currentMode,
         text: `Error: ${err.message}`,
         createdAt: new Date().toISOString()
       }
-      setSession(prev => ({
-        ...prev,
-        messages: [...prev.messages, errorMsg],
-        status: 'error'
-      }))
+      setSession(prev => {
+        const updated = {
+          ...prev,
+          messages: [...prev.messages, errorMsg],
+          status: 'error'
+        }
+        fetch(`/api/marks/${slug}/dock/state`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session: updated })
+        }).catch(() => {})
+        return updated
+      })
       setTimeout(() => {
         setSession(prev => ({ ...prev, status: 'idle' }))
       }, 2000)
@@ -182,6 +223,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
       try {
         const res = await fetch(`/api/marks/${slug}/dock/implement`, {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ plan: session.lastPlan })
         })
         const data = await res.json()
@@ -195,22 +237,47 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
           annotations: { badge: 'APPLIED' }
         }
         
-        setSession(prev => ({
-          ...prev,
-          messages: [...prev.messages, aiMsg],
-          status: 'complete'
-        }))
+        setSession(prev => {
+          const updated = {
+            ...prev,
+            messages: [...prev.messages, aiMsg],
+            status: 'complete',
+            mode: newMode
+          }
+          fetch(`/api/marks/${slug}/dock/state`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session: updated })
+          }).catch(() => {})
+          return updated
+        })
         setTimeout(() => {
-          setSession(prev => ({ ...prev, status: 'idle' }))
-          // Refresh to show changes
-          window.location.reload()
+          setSession(prev => {
+            const updated = { ...prev, status: 'idle' }
+            fetch(`/api/marks/${slug}/dock/state`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ session: updated })
+            }).catch(() => {})
+            // Refresh to show changes
+            setTimeout(() => window.location.reload(), 300)
+            return updated
+          })
         }, 1500)
       } catch (err) {
         setSession(prev => ({ ...prev, status: 'error' }))
       }
+    } else {
+      setSession(prev => {
+        const updated = { ...prev, mode: newMode }
+        fetch(`/api/marks/${slug}/dock/state`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session: updated })
+        }).catch(() => {})
+        return updated
+      })
     }
-    
-    setSession(prev => ({ ...prev, mode: newMode }))
   }
 
   const statusText = {

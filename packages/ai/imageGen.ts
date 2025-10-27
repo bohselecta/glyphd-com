@@ -1,4 +1,4 @@
-// Image generation using DeepInfra OpenAI-compatible Images API
+// Image generation using DeepInfra's OpenAI-compatible Images API
 // Docs: https://deepinfra.com/docs/advanced/lora_text_to_image
 export async function generateImage(apiKey: string, prompt: string, size='1024x576', model='black-forest-labs/FLUX-1-dev') {
   if (!apiKey) {
@@ -7,9 +7,9 @@ export async function generateImage(apiKey: string, prompt: string, size='1024x5
   
   const url = 'https://api.deepinfra.com/v1/openai/images/generations'
   
-  // Create abort controller with 60 second timeout
+  // Create abort controller with 25 second timeout (Vercel free tier is 30s)
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 60000)
+  const timeoutId = setTimeout(() => controller.abort(), 25000)
   
   try {
     const res = await fetch(url, {
@@ -33,7 +33,7 @@ export async function generateImage(apiKey: string, prompt: string, size='1024x5
   } catch (err: any) {
     clearTimeout(timeoutId)
     if (err.name === 'AbortError') {
-      throw new Error('Image generation timed out after 60 seconds')
+      throw new Error('Image generation timed out after 25 seconds')
     }
     throw new Error(`Image API request failed: ${err.message}`)
   }

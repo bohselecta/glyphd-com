@@ -19,7 +19,7 @@ interface Section {
 export default function PlannerPage() {
   const searchParams = useSearchParams()
   const [idea, setIdea] = useState('An e-commerce page for a neon desert jacket with sizes and colors, free shipping, and 30-day returns.')
-  const [autoPlanner, setAutoPlanner] = useState(true)
+  const [autoPlanner, setAutoPlanner] = useState(true) // Default: enabled (checked = greyed out mode)
   const [schemas, setSchemas] = useState<string[]>([])
   const [sections, setSections] = useState<Section[]>([])
   const [newSectionName, setNewSectionName] = useState('')
@@ -181,7 +181,7 @@ export default function PlannerPage() {
                 onChange={e => setAutoPlanner(e.target.checked)}
                 className="rounded"
               />
-              Auto-planner
+              Use AI plan (uncheck for advanced)
             </label>
             <a href="/" className="text-sm text-neutral-400 hover:text-white">← Back</a>
           </div>
@@ -189,7 +189,7 @@ export default function PlannerPage() {
 
         {/* Idea Input */}
         <div className="glass p-4 space-y-3">
-          <label className="text-sm text-neutral-400">Enter your idea</label>
+          <label className="text-ui text-text-secondary font-medium">Enter your idea</label>
           <textarea 
             className="w-full bg-transparent outline-none border border-white/10 rounded-xl px-3 py-2"
             rows={3} 
@@ -205,7 +205,7 @@ export default function PlannerPage() {
               {isAnalyzing ? 'Analyzing...' : 'Analyze'}
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-neutral-400">Mark Name:</span>
+              <span className="text-ui text-text-secondary">Mark Name:</span>
               <input
                 type="text"
                 className="text-sm font-mono bg-white/5 px-2 py-1 rounded outline-none border border-transparent hover:border-white/10 focus:border-white/20 w-32"
@@ -221,17 +221,19 @@ export default function PlannerPage() {
             <h2 className="text-lg font-semibold flex items-center gap-2">
               {autoPlanner ? '✨' : '📋'} Sections
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className={`flex flex-wrap gap-2 ${autoPlanner ? 'opacity-60' : ''}`}>
               {schemas.map((schema, i) => (
                 <div key={i} className="px-3 py-1 bg-white/5 rounded-lg text-sm flex items-center gap-2">
                   <span>{schema}</span>
-                  {!autoPlanner && (
+                  {!autoPlanner ? (
                     <button 
                       onClick={() => setSchemas(schemas.filter((_, idx) => idx !== i))}
                       className="text-neutral-400 hover:text-red-400"
                     >
                       ×
                     </button>
+                  ) : (
+                    <span className="text-green-400">✨</span>
                   )}
                 </div>
               ))}
@@ -244,10 +246,10 @@ export default function PlannerPage() {
           </div>
         )}
 
-        {/* Add Manual Section (when auto-planner is off) */}
-        {!autoPlanner && (
+        {/* Add Manual Section (only when auto-planner is unchecked - advanced mode) */}
+        {!autoPlanner ? (
           <div className="glass p-4 space-y-3">
-            <h3 className="text-sm font-medium">Add Section</h3>
+            <h3 className="text-ui font-medium text-text-primary">Add Section</h3>
             <div className="space-y-2">
               <input
                 type="text"
@@ -296,12 +298,36 @@ export default function PlannerPage() {
               </button>
             </div>
           </div>
+        ) : (
+          <div className="glass p-4 space-y-3 opacity-50 pointer-events-none">
+            <h3 className="text-ui font-medium text-text-secondary">Add Section</h3>
+            <div className="space-y-2">
+              <input
+                type="text"
+                placeholder="Unlock advanced mode to add sections manually"
+                disabled
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none"
+              />
+              <textarea
+                placeholder="Check the AI plan option above to enable..."
+                disabled
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none"
+                rows={2}
+              />
+              <button
+                disabled
+                className="btn-primary text-sm px-4 py-2 disabled:opacity-30"
+              >
+                + Add Section (unlock by unchecking AI plan)
+              </button>
+            </div>
+          </div>
         )}
 
         {/* Image Planning Section */}
         {imagePlans.length > 0 && (
           <div className="glass p-4 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">
+            <h2 className="text-h3 font-semibold text-text-primary flex items-center gap-2">
               🖼️ Image Plan
             </h2>
             <div className="space-y-2">
@@ -309,10 +335,10 @@ export default function PlannerPage() {
                 <div key={plan.id} className="flex items-start justify-between p-3 bg-white/5 rounded-lg">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs px-2 py-0.5 bg-white/10 rounded">
+                      <span className="text-caption px-2 py-0.5 bg-white/10 rounded">
                         {plan.type}
                       </span>
-                      <span className="text-sm text-neutral-400">{plan.description}</span>
+                      <span className="text-ui text-text-secondary">{plan.description}</span>
                     </div>
                     {plan.layout && (
                       <div className="text-xs text-neutral-500 mt-1">

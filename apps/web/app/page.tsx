@@ -15,7 +15,7 @@ export default function Home() {
   const [building, setBuilding] = useState(false)
   const [message, setMessage] = useState('')
   const [marks, setMarks] = useState<Mark[]>([])
-  const [autoPlanner, setAutoPlanner] = useState(true)
+  const [autoPlanner] = useState(true) // Always enabled by default
   const [examples, setExamples] = useState([
     'Create a landing page for a coffee brand with pricing.',
     'Build a product page for an AI writing tool.',
@@ -74,13 +74,15 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="glyphd" className="h-6" />
-          <nav className="flex items-center gap-4 text-sm">
-            <a href="/pricing" className="text-neutral-400 hover:text-white">Pricing</a>
-            <span className="text-neutral-600">|</span>
-            <a href="/login" className="text-neutral-400 hover:text-white">Log In</a>
-            <span className="text-neutral-600">|</span>
-            <a href="/signup" className="text-neutral-400 hover:text-white">Sign Up</a>
-          </nav>
+            <nav className="flex items-center gap-4 text-sm">
+              <a href="/feed" className="text-neutral-400 hover:text-white">Feed</a>
+              <span className="text-neutral-600">|</span>
+              <a href="/pricing" className="text-neutral-400 hover:text-white">Pricing</a>
+              <span className="text-neutral-600">|</span>
+              <a href="/login" className="text-neutral-400 hover:text-white">Log In</a>
+              <span className="text-neutral-600">|</span>
+              <a href="/signup" className="text-neutral-400 hover:text-white">Sign Up</a>
+            </nav>
         </div>
       </header>
 
@@ -89,19 +91,19 @@ export default function Home() {
 
         {/* Builder */}
         <div className="glass p-6 space-y-4">
-          <label className="text-lg font-medium">Make your mark...</label>
+          <label className="text-h4 font-medium text-text-secondary">Make your mark...</label>
           <textarea
             rows={3}
             value={idea}
             onChange={e => setIdea(e.target.value)}
             placeholder="Example: Create a dark neon portfolio site for a photographer..."
-            className="w-full bg-transparent outline-none resize-none text-xl"
+            className="w-full bg-transparent outline-none resize-none text-bodylg text-text-primary placeholder:text-text-muted"
           />
 
           <div className="flex gap-2 md:gap-3 items-center flex-wrap">
             <div className="w-[calc(50%-0.25rem)] md:w-auto">
               <PlanButton 
-                onClick={() => window.location.href = `/designer?auto=${autoPlanner}`}
+                onClick={() => window.location.href = `/designer?auto=true`}
               />
             </div>
             <div className="w-[calc(50%-0.25rem)] md:w-auto">
@@ -110,28 +112,19 @@ export default function Home() {
                 disabled={building}
               />
             </div>
-            <div className="w-full md:w-auto md:ml-auto flex items-center justify-between md:gap-4">
-              <label className="text-sm text-neutral-400 flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={autoPlanner}
-                  onChange={e => setAutoPlanner(e.target.checked)}
-                  className="rounded"
-                />
-                Auto-plan
-              </label>
-              <a href="/dashboard" className="text-sm text-neutral-400 hover:text-white">Gallery →</a>
+            <div className="w-full md:w-auto md:ml-auto">
+              <a href="/dashboard" className="text-ui text-text-secondary hover:text-accent-cyan">Gallery →</a>
             </div>
           </div>
 
           {message && (
-            <div className="text-sm text-neutral-400 mt-2">{message}</div>
+            <div className="text-ui text-text-secondary mt-2">{message}</div>
           )}
         </div>
 
         {/* Example */}
         <div className="glass p-4">
-          <div className="flex items-center flex-wrap gap-2 text-sm">
+          <div className="flex items-center flex-wrap gap-2 text-ui">
             <button 
               onClick={() => {
                 const suggestions = [
@@ -154,19 +147,18 @@ export default function Home() {
                 const newSuggestions = shuffled.slice(0, 3)
                 setExamples(newSuggestions)
               }}
-              className="text-neutral-400 hover:text-white transition-colors"
+              className="text-text-secondary hover:text-accent-cyan transition-colors"
               title="Generate new ideas"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="hover:rotate-180 transition-transform duration-300">
                 <path d="M1 4v6h6M23 20v-6h-6M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
               </svg>
             </button>
-            <span className="text-neutral-400">Try:</span>
             {examples.map((example, i) => (
               <button 
                 key={i} 
                 onClick={() => setIdea(example)} 
-                className="text-neutral-300 hover:text-white"
+                className="text-text-primary hover:text-accent-cyan"
               >
                 → {example.replace(/^[A-Za-z\s]+(?:landing page|product page|portfolio site)/i, '')}
               </button>

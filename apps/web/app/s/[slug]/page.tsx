@@ -9,7 +9,14 @@ import EditWrapper from './client-edit'
 export const dynamic = 'force-dynamic'
 
 function readSymbol(slug: string) {
-  const base = path.join(process.cwd(), 'apps/web/public/symbols', slug)
+  // Try multiple possible paths
+  let base = path.join(process.cwd(), 'public/symbols', slug)
+  if (!fs.existsSync(path.join(base, 'metadata.json'))) {
+    base = path.join(process.cwd(), 'apps/web/public/symbols', slug)
+  }
+  if (!fs.existsSync(path.join(base, 'metadata.json'))) {
+    base = path.join(process.cwd(), 'apps/web/apps/web/public/symbols', slug)
+  }
   try {
     const meta = JSON.parse(fs.readFileSync(path.join(base, 'metadata.json'), 'utf-8'))
     const schemaPath = path.join(base, 'schema.json')

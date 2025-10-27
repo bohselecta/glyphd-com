@@ -4,7 +4,14 @@ import path from 'path'
 export const dynamic = 'force-dynamic'
 
 function listSymbols() {
-  const dir = path.join(process.cwd(), 'apps/web/public/symbols')
+  // Try both possible paths for symbols
+  let dir = path.join(process.cwd(), 'public/symbols')
+  if (!fs.existsSync(dir)) {
+    dir = path.join(process.cwd(), 'apps/web/public/symbols')
+  }
+  if (!fs.existsSync(dir)) {
+    dir = path.join(process.cwd(), 'apps/web/apps/web/public/symbols')
+  }
   try {
     const names = fs.readdirSync(dir).filter(n => !n.startsWith('.') && n !== '.gitkeep')
     return names.map(n => ({
@@ -21,9 +28,9 @@ export default function Dashboard() {
     <main className="min-h-dvh p-6">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-semibold">Gallery</h1>
+          <h1 className="text-h1 font-semibold text-text-primary">Gallery</h1>
           <div className="flex items-center gap-3 text-sm">
-            <a href="/" className="text-neutral-400 hover:text-white">Create Mark</a>
+            <a href="/" className="text-text-secondary hover:text-accent-cyan">Create Mark</a>
             {/* Future: Filter/Sort controls when auth/db is implemented */}
             {/* <select className="bg-white/5 border border-white/10 rounded px-2 py-1 text-sm">
               <option>All Projects</option>
@@ -34,14 +41,14 @@ export default function Dashboard() {
         </div>
 
         {/* Header caption */}
-        <p className="text-neutral-400 text-sm">
+        <p className="text-text-secondary text-ui">
           Discover projects created with Glyphd. Browse and get inspired by other marks.
         </p>
 
         {symbols.length === 0 ? (
           <div className="glass p-8 text-center rounded-xl">
-            <p className="text-neutral-400 mb-2">No marks yet.</p>
-            <a href="/" className="btn-primary inline-block">Create your first Mark →</a>
+            <p className="text-text-secondary text-ui mb-2">No marks yet.</p>
+            <a href="/" className="btn-primary inline-block text-text-primary hover:text-accent-cyan">Create your first Mark →</a>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -52,14 +59,10 @@ export default function Dashboard() {
                     src={s.thumb} 
                     alt={s.name} 
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none'
-                    }}
                   />
-                  <div className="text-neutral-600 text-xs p-4 text-center">No preview</div>
                 </div>
-                <div className="text-sm font-medium">{s.name}</div>
-                <div className="text-xs text-neutral-400 mt-1">Click to view →</div>
+                <div className="text-ui font-medium text-text-primary">{s.name}</div>
+                <div className="text-caption text-text-muted mt-1">Click to view →</div>
               </a>
             ))}
           </div>
