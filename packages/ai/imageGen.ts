@@ -25,8 +25,22 @@ export async function generateImage(apiKey: string, prompt: string, size='1024x5
     clearTimeout(timeoutId)
     
     if (!res.ok) {
-      const error = await res.json().catch(() => ({ error: { message: `HTTP ${res.status}` } }))
-      throw new Error(`Image generation failed: ${error.error?.message || res.statusText}`)
+      // Try to get error details
+      let errorText = `HTTP ${res.status}`
+      try {
+        const contentType = res.headers.get('content-type')
+        if (contentType?.includes('application/json')) {
+          const error = await res.json()
+          errorText = error.error?.message || error.message || JSON.stringify(error)
+        } else {
+          const text = await res.text()
+          errorText = text.substring(0, 100) // Limit error text length
+        }
+      } catch (e) {
+        // Use status text as fallback
+        errorText = res.statusText
+      }
+      throw new Error(`Image generation failed (${res.status}): ${errorText}`)
     }
     
     return res.json()
