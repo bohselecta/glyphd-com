@@ -1,2 +1,2 @@
-export { default } from '../../s/[slug]/edit/page'
+export { default } from '../../../s/[slug]/edit/page'
 

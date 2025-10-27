@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { limit } from '../../../lib/limiter'
+import { limit } from '../../../../lib/limiter'
 
 const follows = new Map<string, Set<string>>()
 

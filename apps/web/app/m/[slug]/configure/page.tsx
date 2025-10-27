@@ -1,2 +1,2 @@
-export { default } from '../../s/[slug]/configure/page'
+export { default } from '../../../s/[slug]/configure/page'
 
