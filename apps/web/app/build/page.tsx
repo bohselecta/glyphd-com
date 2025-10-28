@@ -20,63 +20,55 @@ function BuildContent() {
 
   async function buildMark() {
     const logMessages: string[] = []
-    logMessages.push('Parsing intent...')
-    setStatus('Parsing intent...')
-    setProgress(10)
+    logMessages.push('Starting AI-powered build...')
+    setStatus('Starting build...')
+    setProgress(5)
     setLogs([...logMessages])
 
-    // Simulated build steps
-    const steps = [
-      'Mapping schemas...',
-      'Calling AI for copy...',
-      'Generating copy...',
-      'Synthesizing image prompt...',
-      'Calling Image Generator...',
-      'Generating hero image...',
-      'Calling AI for sections...',
-      'Creating sections...',
-      'Writing files...',
-      'Saving schema templates...',
-      'Finalizing...'
-    ]
-
-    for (let i = 0; i < steps.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      logMessages.push(steps[i])
-      setStatus(steps[i])
-      setProgress(10 + (i + 1) * 7)
-      setLogs([...logMessages])
-    }
-
-    // Call actual API
+    // Call actual API immediately
     try {
+      logMessages.push('Calling AI services...')
+      setStatus('Initializing AI...')
+      setProgress(10)
+      setLogs([...logMessages])
+      
       const res = await fetch('/api/build', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, symbol: slug, stream: false })
       })
+      
       const data = await res.json()
       
-      // Add API logs to our logs
-      if (data.logs) {
+      // Update with API logs
+      if (data.logs && Array.isArray(data.logs)) {
         logMessages.push(...data.logs)
         setLogs([...logMessages])
       }
       
+      setStatus('Processing results...')
+      setProgress(90)
+      
       if (data.symbol?.slug) {
+        logMessages.push('Build complete!')
         setCompleted(true)
         setStatus('Build complete!')
         setProgress(100)
+        setLogs([...logMessages])
         
         // Redirect after a moment
         setTimeout(() => {
           router.push(`/m/${data.symbol.slug}`)
-        }, 1500)
+        }, 2000)
       } else {
         setStatus('Build failed: ' + (data.message || 'Unknown error'))
+        logMessages.push('Build failed')
+        setLogs([...logMessages])
       }
     } catch (err: any) {
       setStatus('Build error: ' + err.message)
+      logMessages.push('Error: ' + err.message)
+      setLogs([...logMessages])
     }
   }
 
