@@ -40,6 +40,14 @@ function BuildContent() {
       
       const data = await res.json()
       
+      // Log the full response for debugging
+      console.log('API Response:', data)
+      
+      // Check for API errors
+      if (!res.ok) {
+        throw new Error(data.message || `HTTP ${res.status}`)
+      }
+      
       // Update with API logs
       if (data.logs && Array.isArray(data.logs)) {
         logMessages.push(...data.logs)
@@ -61,13 +69,17 @@ function BuildContent() {
           router.push(`/m/${data.symbol.slug}`)
         }, 2000)
       } else {
-        setStatus('Build failed: ' + (data.message || 'Unknown error'))
-        logMessages.push('Build failed')
+        const errorMsg = data.message || data.error || 'Unknown error'
+        setStatus('Build failed: ' + errorMsg)
+        logMessages.push('Build failed: ' + errorMsg)
+        console.error('Build failed:', data)
         setLogs([...logMessages])
       }
     } catch (err: any) {
+      console.error('Build error:', err)
       setStatus('Build error: ' + err.message)
       logMessages.push('Error: ' + err.message)
+      logMessages.push('Stack: ' + (err.stack || ''))
       setLogs([...logMessages])
     }
   }
