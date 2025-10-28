@@ -1,8 +1,8 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function BuildPage() {
+function BuildContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const prompt = searchParams.get('prompt') || ''
@@ -124,6 +124,14 @@ export default function BuildPage() {
         )}
       </div>
     </main>
+  )
+}
+
+export default function BuildPage() {
+  return (
+    <Suspense fallback={<div className="min-h-dvh flex items-center justify-center">Loading...</div>}>
+      <BuildContent />
+    </Suspense>
   )
 }
 

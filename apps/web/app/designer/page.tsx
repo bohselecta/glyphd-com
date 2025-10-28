@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 interface ImagePlan {
@@ -16,7 +16,7 @@ interface Section {
   schemaType?: string
 }
 
-export default function PlannerPage() {
+function PlannerContent() {
   const searchParams = useSearchParams()
   const [idea, setIdea] = useState('An e-commerce page for a neon desert jacket with sizes and colors, free shipping, and 30-day returns.')
   const [autoPlanner, setAutoPlanner] = useState(true) // Default: enabled (checked = greyed out mode)
@@ -425,5 +425,13 @@ export default function PlannerPage() {
       </div>
       </div>
     </main>
+  )
+}
+
+export default function PlannerPage() {
+  return (
+    <Suspense fallback={<div className="min-h-dvh flex items-center justify-center">Loading...</div>}>
+      <PlannerContent />
+    </Suspense>
   )
 }

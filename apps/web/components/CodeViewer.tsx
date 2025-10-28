@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 type File = FileNode
 interface FileNode {
@@ -50,7 +50,7 @@ export default function CodeViewer({ slug }: CodeViewerProps) {
     }
   }
 
-  function renderTree(nodes: FileNode[], level = 0): JSX.Element[] {
+  function renderTree(nodes: FileNode[], level = 0): React.ReactElement[] {
     return nodes.map(node => (
       <div key={node.path}>
         <div 

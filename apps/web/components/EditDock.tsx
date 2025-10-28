@@ -132,7 +132,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
       }
 
       setSession(prev => {
-        const updated = {
+        const updated: DockSession = {
           ...prev,
           messages: [...prev.messages, aiMsg],
           status: currentMode === 'code' ? 'implementing' : 'complete'
@@ -152,7 +152,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
       if (currentMode === 'code') {
         setTimeout(() => {
           setSession(prev => {
-            const updated = { ...prev, status: 'complete' }
+            const updated: DockSession = { ...prev, status: 'complete' }
             fetch(`/api/marks/${slug}/dock/state`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
@@ -162,7 +162,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
           })
           setTimeout(() => {
             setSession(prev => {
-              const updated = { ...prev, status: 'idle' }
+              const updated: DockSession = { ...prev, status: 'idle' }
               // Persist final state before refresh
               fetch(`/api/marks/${slug}/dock/state`, {
                 method: 'PUT',
@@ -177,7 +177,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
         }, 500)
       } else {
         setSession(prev => {
-          const updated = { ...prev, status: 'idle' }
+          const updated: DockSession = { ...prev, status: 'idle' }
           fetch(`/api/marks/${slug}/dock/state`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -195,7 +195,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
         createdAt: new Date().toISOString()
       }
       setSession(prev => {
-        const updated = {
+        const updated: DockSession = {
           ...prev,
           messages: [...prev.messages, errorMsg],
           status: 'error'
@@ -238,7 +238,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
         }
         
         setSession(prev => {
-          const updated = {
+          const updated: DockSession = {
             ...prev,
             messages: [...prev.messages, aiMsg],
             status: 'complete',
@@ -253,7 +253,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
         })
         setTimeout(() => {
           setSession(prev => {
-            const updated = { ...prev, status: 'idle' }
+            const updated: DockSession = { ...prev, status: 'idle' }
             fetch(`/api/marks/${slug}/dock/state`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
@@ -269,7 +269,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
       }
     } else {
       setSession(prev => {
-        const updated = { ...prev, mode: newMode }
+        const updated: DockSession = { ...prev, mode: newMode }
         fetch(`/api/marks/${slug}/dock/state`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },

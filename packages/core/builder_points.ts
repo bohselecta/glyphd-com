@@ -4,10 +4,11 @@ import path from 'path'
 export type BuilderEvent = 
   | { type: 'like'; by: string; markId: string; ts: number }
   | { type: 'comment'; by: string; markId: string; helpful?: boolean; ts: number }
-  | { type: 'collab.accepted'; markId: string; ts: number }
-  | { type: 'collab.merge'; markId: string; ts: number }
-  | { type: 'featured'; markId: string; ts: number }
-  | { type: 'collab.abandoned'; markId: string; ts: number }
+  | { type: 'collab.accepted'; by: string; markId: string; ts: number }
+  | { type: 'collab.merge'; by: string; markId: string; ts: number }
+  | { type: 'collab.submit'; by: string; markId: string; ts: number }
+  | { type: 'featured'; by: string; markId: string; ts: number }
+  | { type: 'collab.abandoned'; by: string; markId: string; ts: number }
 
 export interface BuilderPoints {
   username: string
@@ -30,6 +31,7 @@ export function getPointsFromEvent(e: BuilderEvent): number {
     case 'comment': return e.helpful ? 0.5 : 0
     case 'collab.accepted': return 2
     case 'collab.merge': return 3
+    case 'collab.submit': return 1
     case 'featured': return 10
     case 'collab.abandoned': return -1
     default: return 0
@@ -89,6 +91,10 @@ export function addEvent(event: BuilderEvent) {
       break
     case 'collab.accepted':
       data.acceptedCollabs += 1
+      break
+    case 'collab.submit':
+      // Track as merge since it's similar collaboration activity
+      data.merges += 0.5
       break
     case 'featured':
       data.featured += 1
