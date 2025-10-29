@@ -95,7 +95,7 @@ function SectionHero({slug, meta, heroImage}:{slug:string, meta:any, heroImage?:
       </h1>
       <p className="text-neutral-400">{meta.sub}</p>
       {heroImage && (
-        // eslint-disable-next-line @next/next/no-img-element
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img src={heroImage} alt="hero" className="w-full rounded-xl border border-white/10"/>
       )}
     </section>
