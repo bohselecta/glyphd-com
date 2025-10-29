@@ -15,12 +15,16 @@ export interface BuildResult {
 }
 
 function craftImagePrompt(appPrompt: string, schemas: string[]) {
+  console.log('🎨 Crafting image prompt for schemas:', schemas)
+  
   // Determine style based on detected app type
   const hasProduct = schemas.includes('Product') || schemas.includes('Offer')
   const hasService = schemas.includes('Service')
   const hasCreative = schemas.includes('CreativeWork') || schemas.includes('Project')
   const hasOrganization = schemas.includes('Organization')
   const hasLocal = schemas.includes('LocalBusiness')
+  
+  console.log('🎨 Schema checks:', { hasProduct, hasService, hasCreative, hasOrganization, hasLocal })
   
   // Default style for all
   let style = 'modern dark'
@@ -29,6 +33,7 @@ function craftImagePrompt(appPrompt: string, schemas: string[]) {
   if (hasProduct && !hasService) {
     // E-commerce/Product
     style = 'vibrant product photography style, professional lighting, clean white background with subtle gradient, premium look'
+    console.log('🎨 Selected style: E-commerce/Product')
   } else if (hasService && hasLocal) {
     // Local business
     style = 'friendly neighborhood vibe, warm welcoming colors, authentic local atmosphere'
@@ -50,8 +55,10 @@ function craftImagePrompt(appPrompt: string, schemas: string[]) {
   } else {
     // Default tech/modern
     style = 'dark candy tech meets desert nomad neon, hot pink and neon cyan accents, glass panels'
+    console.log('🎨 Selected style: Default candy tech')
   }
   
+  console.log('🎨 Final style:', style)
   return `High quality hero illustration for a landing page, ${style}, ${appPrompt}.`;
 }
 
