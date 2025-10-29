@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { MakeButton, PlanButton } from '../components/buttons'
+import LetterGlitch from '../components/backgrounds/LetterGlitch'
 
 interface Mark {
   slug: string
@@ -59,12 +60,14 @@ export default function Home() {
 
   return (
     <main className="min-h-dvh relative">
-      {/* Background with vignette */}
+      {/* Background with Letter Glitch */}
       <div className="fixed inset-0 -z-10">
-        <img 
-          src="/bg-smooth-blobs.svg" 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover"
+        <LetterGlitch
+          glitchColors={['#2b4539', '#61dca3', '#61b3dc', '#FF2DAA']}
+          glitchSpeed={80}
+          centerVignette={false}
+          outerVignette={true}
+          smooth={true}
         />
         <div className="absolute inset-0 bg-scrim-a"></div>
       </div>
