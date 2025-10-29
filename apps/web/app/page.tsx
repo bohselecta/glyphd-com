@@ -62,11 +62,13 @@ export default function Home() {
     <main className="min-h-dvh relative">
       {/* Hyperspeed background */}
       <div className="fixed inset-0 -z-10">
+        {/* @ts-ignore - cameraY is a custom parameter */}
         <Hyperspeed
           effectOptions={{
             onSpeedUp: () => {},
             onSlowDown: () => {},
             distortion: 'deepDistortion',
+            // @ts-ignore
             cameraY: 6,
             length: 400,
             roadWidth: 10,
