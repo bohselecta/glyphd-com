@@ -1,4 +1,4 @@
-// glyphd v10.1: hybrid builder with cost-aware Z.ai
+// glyphd v10.1: hybrid builder with cost-aware DeepSeek
 import { chatZAI } from '../ai/zaiClient'
 import { generateImage } from '../ai/imageGen'
 import { writeSymbolFiles, writeSymbolSchema, writeSchemaEntry, ensureSchemaDir, writeMarkFiles, writeMarkSchema } from '../deployer/fileWriter'
@@ -42,7 +42,7 @@ export async function composeAndBuild(prompt: string, symbolName: string, model=
     const mapping = mapIntentToSchemas(prompt)
     logs.push('Mapped intent → schemas: ' + mapping.schemas.join(', '))
 
-    // 1) Copy via Z.ai
+    // 1) Copy via DeepSeek
     logs.push('Calling AI for copy…')
     const copyResp = await chatZAI(
       [

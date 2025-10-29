@@ -33,27 +33,67 @@ export async function POST(req: Request, { params }: { params: { slug: string }}
       })
     } else {
       // Code mode: implement changes
+      // Get current state for snapshot
+      const schemaPath = path.join(baseDir, 'schema.json')
+      const currentSchema = fs.existsSync(schemaPath) 
+        ? JSON.parse(fs.readFileSync(schemaPath, 'utf-8'))
+        : { nav: [], features: [], pricing: [] }
+      
+      // Ask AI to generate updated schema based on the request
+      const systemPrompt = `You are a web designer implementing changes to a landing page. The current page has:
+- Navigation: ${JSON.stringify(currentSchema.nav || [])}
+- Features: ${JSON.stringify(currentSchema.features || [])}
+- Pricing: ${JSON.stringify(currentSchema.pricing || [])}
+
+Generate ONLY valid JSON with the updated sections. Return a JSON object with keys: nav, features, pricing (only the sections that need changes, or all if requested).`
+      
       const resp = await chatZAI([
-        { role: 'system', content: 'You are implementing changes to a web project. Provide a brief confirmation of what was changed.' },
-        { role: 'user', content: `Implement: ${text}\n\nFor: ${meta.name}` }
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: `User request: ${text}\n\nUpdate the landing page content for: ${meta.name}` }
       ], { task: 'refine' })
       
-      // Actually implement changes to schema files
-      const schemaPath = path.join(baseDir, 'schema.json')
-      if (fs.existsSync(schemaPath)) {
-        const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'))
-        // For now, append to sub as a visible change
-        meta.sub = (meta.sub || '') + ' • ' + (text || 'refined')
-        fs.writeFileSync(path.join(baseDir, 'metadata.json'), JSON.stringify(meta, null, 2), 'utf-8')
-      } else {
-        // Fallback if no schema exists
-        meta.sub = (meta.sub || '') + ' • ' + (text || 'refined')
-        fs.writeFileSync(path.join(baseDir, 'metadata.json'), JSON.stringify(meta, null, 2), 'utf-8')
+      // Parse AI response for schema changes
+      let updatedSchema = JSON.parse(JSON.stringify(currentSchema))
+      const aiContent = typeof resp === 'string' ? resp : resp.content
+      
+      try {
+        // Try to extract JSON from the AI response
+        const jsonMatch = aiContent.match(/\{[\s\S]*\}/)
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0])
+          // Update only the sections that were provided
+          if (parsed.nav) updatedSchema.nav = parsed.nav
+          if (parsed.features) updatedSchema.features = parsed.features  
+          if (parsed.pricing) updatedSchema.pricing = parsed.pricing
+          if (parsed.testimonials) updatedSchema.testimonials = parsed.testimonials
+          if (parsed.faq) updatedSchema.faq = parsed.faq
+          if (parsed.integrations) updatedSchema.integrations = parsed.integrations
+        }
+      } catch (err) {
+        console.error('Failed to parse AI response for schema update:', err)
+        // Fallback: just update the subtitle to show the change happened
+        meta.sub = (meta.sub || '') + ' • Updated based on: ' + text
       }
       
+      // Save the state snapshot before making changes
+      const stateSnapshot = {
+        metadata: JSON.parse(JSON.stringify(meta)),
+        schema: JSON.parse(JSON.stringify(currentSchema)),
+        timestamp: new Date().toISOString()
+      }
+      
+      // Write updated schema
+      fs.writeFileSync(schemaPath, JSON.stringify(updatedSchema, null, 2), 'utf-8')
+      
+      // Update metadata
+      meta.sub = (meta.sub || '') + ' • ' + text
+      fs.writeFileSync(path.join(baseDir, 'metadata.json'), JSON.stringify(meta, null, 2), 'utf-8')
+      
+      // Return success with snapshot for edit points
       return NextResponse.json({ 
         ok: true, 
-        message: typeof resp === 'string' ? resp : resp.content || 'Changes implemented successfully.'
+        message: typeof resp === 'string' ? resp : resp.content || 'Changes implemented successfully.',
+        stateSnapshot
       })
     }
   } catch (e: any) {

@@ -11,6 +11,11 @@ interface Message {
   text: string
   createdAt: string
   annotations?: { badge?: 'ASK' | 'CODE' | 'PLAN' | 'APPLIED'; diffId?: string }
+  stateSnapshot?: {
+    metadata: any
+    schema: any
+    timestamp: string
+  }
 }
 
 interface PlanStep {
@@ -97,6 +102,28 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
     }
   }
 
+  async function handleJumpBack(messageId: string) {
+    try {
+      const res = await fetch(`/api/marks/${slug}/dock/jump-back`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messageId })
+      })
+      const data = await res.json()
+      
+      if (data.ok) {
+        // Reload the session to show truncated messages
+        await loadSession()
+        // Reload the page to show the reverted state
+        window.location.reload()
+      } else {
+        alert('Failed to jump back: ' + (data.message || 'Unknown error'))
+      }
+    } catch (err: any) {
+      alert('Failed to jump back: ' + err.message)
+    }
+  }
+
   async function sendMessage() {
     if (!input.trim() || session.status === 'implementing') return
 
@@ -128,7 +155,8 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
         modeAtSend: currentMode,
         text: data.message || 'Done.',
         createdAt: new Date().toISOString(),
-        annotations: { badge: currentMode === 'code' ? 'CODE' : 'ASK' }
+        annotations: { badge: currentMode === 'code' ? 'CODE' : 'ASK' },
+        stateSnapshot: data.stateSnapshot // Store the snapshot if provided
       }
 
       setSession(prev => {
@@ -344,7 +372,7 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
                     <p className="text-sm">Tell me what you want to change or add...</p>
                   </div>
                 )}
-                {session.messages.map(msg => (
+                {session.messages.map((msg, idx) => (
                   <div
                     key={msg.id}
                     className={`flex gap-3 ${
@@ -360,6 +388,14 @@ export default function EditDock({ slug, isOpen, onClose, onToggle }: EditDockPr
                         <div className="text-xs mb-1 opacity-70 capitalize">{msg.annotations.badge}</div>
                       )}
                       <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                      {msg.stateSnapshot && idx > 0 && (
+                        <button
+                          onClick={() => handleJumpBack(msg.id)}
+                          className="mt-2 text-xs text-accent-cyan hover:text-accent-cyan/80 underline"
+                        >
+                          ↶ Jump back here
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}

@@ -1,0 +1,73 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Features",
+      "href": "#features"
+    },
+    {
+      "label": "Pricing",
+      "href": "#pricing"
+    },
+    {
+      "label": "Login",
+      "href": "/login"
+    }
+  ],
+  "features": [
+    {
+      "title": "AI-Powered Writing",
+      "desc": "Generate high-quality content in seconds with advanced AI algorithms"
+    },
+    {
+      "title": "Multiple Content Types",
+      "desc": "Create blog posts, emails, social media content, and more"
+    },
+    {
+      "title": "Tone Adjustment",
+      "desc": "Adapt writing style to match your brand voice and audience"
+    },
+    {
+      "title": "Plagiarism Check",
+      "desc": "Ensure originality with built-in plagiarism detection"
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Starter",
+      "price": "$19/month",
+      "features": [
+        "10,000 words/month",
+        "5 content types",
+        "Basic support"
+      ]
+    },
+    {
+      "name": "Pro",
+      "price": "$49/month",
+      "features": [
+        "50,000 words/month",
+        "All content types",
+        "Priority support",
+        "Team collaboration"
+      ]
+    },
+    {
+      "name": "Enterprise",
+      "price": "Custom",
+      "features": [
+        "Unlimited words",
+        "Custom templates",
+        "Dedicated account manager",
+        "API access"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "Product",
+    "Offer"
+  ]
+}

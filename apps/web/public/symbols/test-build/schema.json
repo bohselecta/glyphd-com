@@ -1,0 +1,65 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Menu",
+      "href": "/menu"
+    },
+    {
+      "label": "Locations",
+      "href": "/locations"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    }
+  ],
+  "features": [
+    {
+      "title": "Freshly Roasted Beans",
+      "desc": "Sourced ethically and roasted daily for peak flavor."
+    },
+    {
+      "title": "Cozy Atmosphere",
+      "desc": "A welcoming space to relax, work, or connect with friends."
+    },
+    {
+      "title": "Artisan Pastries",
+      "desc": "Handcrafted baked goods made fresh each morning."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Basic Brew",
+      "price": "$3.50",
+      "features": [
+        "12oz Drip Coffee",
+        "Free Refill"
+      ]
+    },
+    {
+      "name": "Barista Special",
+      "price": "$5.00",
+      "features": [
+        "16oz Latte or Cappuccino",
+        "Choice of Syrup"
+      ]
+    },
+    {
+      "name": "Deluxe Experience",
+      "price": "$7.50",
+      "features": [
+        "20oz Specialty Drink",
+        "Pastry Pairing",
+        "Loyalty Points"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "Product",
+    "Offer"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "#home"
+    },
+    {
+      "label": "Features",
+      "href": "#features"
+    },
+    {
+      "label": "Pricing",
+      "href": "#pricing"
+    },
+    {
+      "label": "Download",
+      "href": "#download"
+    }
+  ],
+  "features": [
+    {
+      "title": "Guided Meditations",
+      "desc": "Expert-led sessions for all levels"
+    },
+    {
+      "title": "Daily Reminders",
+      "desc": "Gentle prompts to build consistent practice"
+    },
+    {
+      "title": "Focus Timer",
+      "desc": "Customizable intervals for deep concentration"
+    },
+    {
+      "title": "Sleep Stories",
+      "desc": "Soothing narratives to ease into rest"
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Free",
+      "price": "$0",
+      "features": [
+        "Basic meditations",
+        "Daily reminder",
+        "3 focus timers"
+      ]
+    },
+    {
+      "name": "Premium",
+      "price": "$8/month",
+      "features": [
+        "All meditations",
+        "Sleep stories",
+        "Unlimited timers",
+        "Offline access"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "CreativeWork"
+  ]
+}

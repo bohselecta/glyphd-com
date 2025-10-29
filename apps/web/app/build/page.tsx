@@ -38,6 +38,14 @@ function BuildContent() {
         body: JSON.stringify({ prompt, symbol: slug, stream: false })
       })
       
+      // Check if response is JSON
+      const contentType = res.headers.get('content-type')
+      if (!contentType?.includes('application/json')) {
+        const text = await res.text()
+        console.error('API returned non-JSON response:', text.substring(0, 200))
+        throw new Error(`API error: Server returned ${res.status}. Check console for details.`)
+      }
+      
       const data = await res.json()
       
       // Log the full response for debugging
@@ -45,7 +53,7 @@ function BuildContent() {
       
       // Check for API errors
       if (!res.ok) {
-        throw new Error(data.message || `HTTP ${res.status}`)
+        throw new Error(data.message || data.error || `HTTP ${res.status}`)
       }
       
       // Update with API logs

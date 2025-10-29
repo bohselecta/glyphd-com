@@ -49,36 +49,45 @@ export async function middleware(req: NextRequest) {
     return res
   }
   
-  // Supabase auth check for protected paths
+  // Supabase auth check for protected paths (only if configured)
   const cookieStore = await cookies()
+  let user = null
   
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          try {
-            cookieStore.set({ name, value, ...options })
-          } catch (error) {
-            // Handle error
-          }
-        },
-        remove(name: string, options: CookieOptions) {
-          try {
-            cookieStore.set({ name, value: '', ...options })
-          } catch (error) {
-            // Handle error
-          }
-        },
-      },
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    try {
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        {
+          cookies: {
+            get(name: string) {
+              return cookieStore.get(name)?.value
+            },
+            set(name: string, value: string, options: CookieOptions) {
+              try {
+                cookieStore.set({ name, value, ...options })
+              } catch (error) {
+                // Handle error
+              }
+            },
+            remove(name: string, options: CookieOptions) {
+              try {
+                cookieStore.set({ name, value: '', ...options })
+              } catch (error) {
+                // Handle error
+              }
+            },
+          },
+        }
+      )
+      
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      user = authUser
+    } catch (error) {
+      // Supabase not configured, continue without auth
+      console.log('Supabase not configured, running in demo mode')
     }
-  )
-  
-  const { data: { user } } = await supabase.auth.getUser()
+  }
   
   // Check for demo user
   const demoUser = await getDemoUser()
@@ -101,10 +110,15 @@ export async function middleware(req: NextRequest) {
   if (method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS') {
     const origin = req.headers.get('origin') || ''
     const host = req.headers.get('host') || ''
-    const sameOrigin = origin.endsWith(host)
+    const referer = req.headers.get('referer') || ''
+    
+    // Allow same-origin requests and localhost development
+    const isSameOrigin = origin.endsWith(host) || origin.endsWith('localhost:5173')
+    const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1')
     const csrf = req.headers.get('x-csrf-token')
     
-    if (!sameOrigin && !csrf) {
+    // Skip CSRF for localhost development and if same-origin
+    if (!isLocalhost && !isSameOrigin && !csrf) {
       return NextResponse.json({ ok: false, error: 'csrf_invalid' }, { status: 403 })
     }
   }

@@ -1,0 +1,66 @@
+{
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Menu",
+      "href": "/menu"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "features": [
+    {
+      "title": "Fresh Roasted Beans",
+      "desc": "Daily roasted coffee beans for the freshest flavor."
+    },
+    {
+      "title": "Cozy Atmosphere",
+      "desc": "A welcoming space to relax, work, or meet friends."
+    },
+    {
+      "title": "Artisan Pastries",
+      "desc": "Handcrafted pastries and snacks made fresh daily."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Basic Brew",
+      "price": "$3.50",
+      "features": [
+        "12oz Coffee",
+        "Dine-In or Takeaway"
+      ]
+    },
+    {
+      "name": "Premium Pour",
+      "price": "$5.00",
+      "features": [
+        "16oz Specialty Drink",
+        "Choice of Milk",
+        "Extra Shot Option"
+      ]
+    },
+    {
+      "name": "Deluxe Delight",
+      "price": "$7.50",
+      "features": [
+        "20oz Signature Beverage",
+        "Pastry Pairing",
+        "Loyalty Points"
+      ]
+    }
+  ],
+  "mappedSchemas": [
+    "Product",
+    "Offer"
+  ]
+}
