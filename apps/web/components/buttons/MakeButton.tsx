@@ -32,8 +32,8 @@ export const MakeButton = React.forwardRef<HTMLButtonElement, Props>(
         >
           <defs>
             <linearGradient id={`g-make-${gid}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#FF2DAA" />
-              <stop offset="100%" stopColor="#33FFF2" />
+              <stop offset="0%" stopColor="#CC2588" />
+              <stop offset="100%" stopColor="#29CCC4" />
             </linearGradient>
             <filter id={`glow-make-${gid}`} x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="6" result="b" />

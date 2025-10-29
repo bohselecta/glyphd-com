@@ -98,7 +98,7 @@ function BuildContent() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold" style={{background: 'linear-gradient(120deg,#FF2DAA,#33FFF2)', WebkitBackgroundClip: 'text', color: 'transparent'}}>
-            Building your mark...
+            Making your mark...
           </h1>
           <p className="text-neutral-400">{prompt}</p>
         </div>
