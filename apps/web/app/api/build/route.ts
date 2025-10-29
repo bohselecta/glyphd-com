@@ -15,9 +15,17 @@ export async function POST(req: Request) {
     // Build the project (this creates the JSON but doesn't write files in Vercel)
     const result = await composeAndBuild(prompt, symbol, model, size)
     
+    console.log('📊 Build result:', {
+      hasSymbol: !!result.symbol,
+      hasCopy: !!result.copy,
+      hasSchemas: !!result.mappedSchemas,
+      schemas: result.mappedSchemas
+    })
+    
     // On Vercel, save to database instead of filesystem
     if (result.symbol?.slug && result.copy) {
       try {
+        console.log('💾 Saving to database with schemas:', result.mappedSchemas)
         const { data: markData, error: dbError } = await createMark({
           slug: result.symbol.slug,
           title: result.copy.headline || symbol,
@@ -45,6 +53,8 @@ export async function POST(req: Request) {
         if (dbError) {
           console.error('Database error:', dbError)
           // Continue anyway - mark data will be returned
+        } else {
+          console.log('✅ Successfully saved to database')
         }
       } catch (dbErr) {
         console.error('Failed to save to database:', dbErr)
