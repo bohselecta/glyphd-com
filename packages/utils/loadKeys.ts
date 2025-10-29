@@ -19,7 +19,7 @@ export function loadKeysIntoEnv() {
     // Log which keys are available (for debugging)
     console.log('API Keys loaded:', {
       hasImageKey: !!process.env.IMAGE_GEN_API_KEY,
-      hasDeepSeekKey: !!process.env.ZAI_API_KEY
+      hasZaiKey: !!process.env.ZAI_API_KEY
     });
   } catch (err) {
     console.error('Failed to load keys:', err);

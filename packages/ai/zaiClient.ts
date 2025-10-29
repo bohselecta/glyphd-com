@@ -15,15 +15,15 @@ type ChatOptions = {
 }
 
 export async function chatZAI(messages: Message[], opts: ChatOptions = {}) {
-  // DeepSeek configuration - OpenAI compatible endpoint
+  // z.ai GLM Coding Plan - OpenAI compatible endpoint
   const apiKey = opts.apiKey || process.env.ZAI_API_KEY || ''
-  const baseUrl = (opts.baseUrl || process.env.ZAI_BASE_URL || 'https://api.deepseek.com').replace(/\/$/, '')
-  const path = opts.path || process.env.ZAI_CHAT_PATH || '/v1/chat/completions'
+  const baseUrl = (opts.baseUrl || process.env.ZAI_BASE_URL || 'https://api.z.ai/api/coding/paas/v4').replace(/\/$/, '')
+  const path = opts.path || process.env.ZAI_CHAT_PATH || '/chat/completions'
   const plan: PlanType = opts.planType || (process.env.ZAI_PLAN_TYPE as PlanType) || (process.env.GLYPHD_MODE==='local' ? 'CODING_LITE' : 'API_STANDARD')
   const model: ZaiModelKey = opts.model || resolveModelForTask(plan, opts.task || 'mapping')
 
   if (!apiKey) {
-    throw new Error('ZAI_API_KEY is not set. Please configure it in /settings/keys (Use your DeepSeek API key)')
+    throw new Error('ZAI_API_KEY is not set. Please configure it in /settings/keys (Use your z.ai API key)')
   }
 
   const url = `${baseUrl}${path}`
@@ -47,7 +47,7 @@ export async function chatZAI(messages: Message[], opts: ChatOptions = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(()=> '')
-    throw new Error(`DEEPSEEK_HTTP_${res.status}: ${text || res.statusText}`)
+    throw new Error(`ZAI_HTTP_${res.status}: ${text || res.statusText}`)
   }
 
   // Attempt to parse a usage-like object (OpenAI-compatible format)
@@ -58,7 +58,7 @@ export async function chatZAI(messages: Message[], opts: ChatOptions = {}) {
   const outputTokens = usage?.completion_tokens || usage?.output_tokens || 0
 
   // cost log
-  if (opts.logCost || process.env.DEEPSEEK_COST_TRACKING_ENABLED === 'true') {
+  if (opts.logCost || process.env.ZAI_COST_TRACKING_ENABLED === 'true') {
     try {
       const est = estimateCost(model, { inputTokens, outputTokens })
       trackUsage({ timestamp: new Date().toISOString(), model, inputTokens, outputTokens, approxCost: est.total, task: opts.task })
