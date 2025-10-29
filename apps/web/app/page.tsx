@@ -66,10 +66,9 @@ export default function Home() {
           glitchColors={['#2b4539', '#61dca3', '#61b3dc', '#FF2DAA']}
           glitchSpeed={80}
           centerVignette={false}
-          outerVignette={true}
+          outerVignette={false}
           smooth={true}
         />
-        <div className="absolute inset-0 bg-scrim-a"></div>
       </div>
       
       {/* Header */}
