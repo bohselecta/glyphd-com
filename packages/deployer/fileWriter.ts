@@ -15,12 +15,26 @@ export function ensureDir(p: string) {
 
 // Helper to get the correct symbols directory path
 function getSymbolsDir() {
-  let dir = path.join(process.cwd(), 'public/symbols')
-  if (fs.existsSync(dir)) return dir
-  dir = path.join(process.cwd(), 'apps/web/public/symbols')
-  if (fs.existsSync(dir)) return dir
-  // Create the first one if none exist
-  return path.join(process.cwd(), 'apps/web/public/symbols')
+  // Try multiple possible paths for different deployment scenarios
+  const paths = [
+    path.join(process.cwd(), 'public', 'symbols'),           // Root public
+    path.join(process.cwd(), 'apps', 'web', 'public', 'symbols'),  // Workspace web
+    path.join(process.cwd(), '..', 'public', 'symbols'),     // Parent public
+    path.join(process.cwd(), '..', '..', 'public', 'symbols'), // Repository root
+    path.join(process.cwd(), '.next', 'static', 'symbols'),  // Build output
+  ]
+  
+  // First, try to find existing directory
+  for (const dir of paths) {
+    if (fs.existsSync(dir)) return dir
+  }
+  
+  // If none exist, create the most likely one based on cwd
+  const likelyPath = process.cwd().includes('apps/web')
+    ? path.join(process.cwd(), 'public', 'symbols')
+    : path.join(process.cwd(), 'apps', 'web', 'public', 'symbols')
+    
+  return likelyPath
 }
 
 export async function ensureSchemaDir(slug: string) {

@@ -14,8 +14,45 @@ export interface BuildResult {
   mappedSchemas?: string[]
 }
 
-function craftImagePrompt(appPrompt: string) {
-  return `High quality hero illustration for a landing page, dark candy tech meets desert nomad neon, hot pink and neon cyan accents, glass panels, ${appPrompt}.`;
+function craftImagePrompt(appPrompt: string, schemas: string[]) {
+  // Determine style based on detected app type
+  const hasProduct = schemas.includes('Product') || schemas.includes('Offer')
+  const hasService = schemas.includes('Service')
+  const hasCreative = schemas.includes('CreativeWork') || schemas.includes('Project')
+  const hasOrganization = schemas.includes('Organization')
+  const hasLocal = schemas.includes('LocalBusiness')
+  
+  // Default style for all
+  let style = 'modern dark'
+  
+  // Adjust style based on app type
+  if (hasProduct && !hasService) {
+    // E-commerce/Product
+    style = 'vibrant product photography style, professional lighting, clean white background with subtle gradient, premium look'
+  } else if (hasService && hasLocal) {
+    // Local business
+    style = 'friendly neighborhood vibe, warm welcoming colors, authentic local atmosphere'
+  } else if (hasCreative || appPrompt.toLowerCase().includes('portfolio')) {
+    // Creative work/Portfolio
+    style = 'bold artistic aesthetic, creative color palette, dynamic composition, artistic flair'
+  } else if (hasOrganization || appPrompt.toLowerCase().includes('company')) {
+    // Corporate/Business
+    style = 'professional corporate design, trustworthy blue tones with modern accents, clean minimalist'
+  } else if (appPrompt.toLowerCase().includes('restaurant') || appPrompt.toLowerCase().includes('food')) {
+    // Food/Restaurant
+    style = 'mouth-watering food photography, warm appetizing colors, inviting atmosphere'
+  } else if (appPrompt.toLowerCase().includes('fitness') || appPrompt.toLowerCase().includes('gym')) {
+    // Fitness
+    style = 'energetic motivational vibe, bold colors, dynamic movement, high energy'
+  } else if (appPrompt.toLowerCase().includes('wellness') || appPrompt.toLowerCase().includes('spa')) {
+    // Wellness/Health
+    style = 'calming peaceful aesthetic, soft natural colors, serene tranquil atmosphere'
+  } else {
+    // Default tech/modern
+    style = 'dark candy tech meets desert nomad neon, hot pink and neon cyan accents, glass panels'
+  }
+  
+  return `High quality hero illustration for a landing page, ${style}, ${appPrompt}.`;
 }
 
 function minimalTemplate(schemaKey: keyof typeof Registry) {
@@ -70,7 +107,7 @@ export async function composeAndBuild(prompt: string, symbolName: string, model=
 
     // 2) Image
     logs.push('Synthesizing image prompt…')
-    const promptImg = craftImagePrompt(prompt)
+    const promptImg = craftImagePrompt(prompt, mapping.schemas)
     logs.push(`Calling Image Generator: ${model} @ ${size}…`)
     const img = await generateImage(process.env.IMAGE_GEN_API_KEY || '', promptImg, size, model)
     const heroImage = (img?.data?.[0]?.url || img?.data?.[0]?.b64_json)
