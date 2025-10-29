@@ -67,6 +67,7 @@ export default function Home() {
             onSpeedUp: () => {},
             onSlowDown: () => {},
             distortion: 'deepDistortion',
+            cameraY: 6,
             length: 400,
             roadWidth: 10,
             islandWidth: 2,
