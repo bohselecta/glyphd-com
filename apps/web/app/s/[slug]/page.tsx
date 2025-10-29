@@ -5,11 +5,12 @@ import { buildJSONLD } from '@schemas/jsonldTemplates'
 import ShareButton from '../../../components/ShareButton'
 import EditButton from '../../../components/EditButton'
 import EditWrapper from './client-edit'
+import { getMark } from '../../../lib/database'
 
 export const dynamic = 'force-dynamic'
 
-function readSymbol(slug: string) {
-  // Try multiple possible paths
+async function readSymbol(slug: string) {
+  // First, try to read from filesystem (local development)
   let base = path.join(process.cwd(), 'public/symbols', slug)
   if (!fs.existsSync(path.join(base, 'metadata.json'))) {
     base = path.join(process.cwd(), 'apps/web/public/symbols', slug)
@@ -17,25 +18,68 @@ function readSymbol(slug: string) {
   if (!fs.existsSync(path.join(base, 'metadata.json'))) {
     base = path.join(process.cwd(), 'apps/web/apps/web/public/symbols', slug)
   }
-  try {
-    const meta = JSON.parse(fs.readFileSync(path.join(base, 'metadata.json'), 'utf-8'))
-    const schemaPath = path.join(base, 'schema.json')
-    const schema = fs.existsSync(schemaPath) ? JSON.parse(fs.readFileSync(schemaPath, 'utf-8')) : null
-    const hasHero = fs.existsSync(path.join(base, 'hero.png'))
-    // load per-type schema data
-    const schemasDir = path.join(base, 'schemas')
-    let typed: Record<string, any> = {}
-    if (fs.existsSync(schemasDir)) {
-      const files = fs.readdirSync(schemasDir).filter(f=>f.endsWith('.json'))
-      for (const f of files) {
-        const type = f.replace(/\.json$/, '')
-        typed[type] = JSON.parse(fs.readFileSync(path.join(schemasDir, f), 'utf-8'))
+  
+  // Check if files exist (and filesystem is available)
+  const metadataPath = path.join(base, 'metadata.json')
+  if (fs.existsSync && fs.existsSync(metadataPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'))
+      const schemaPath = path.join(base, 'schema.json')
+      const schema = fs.existsSync(schemaPath) ? JSON.parse(fs.readFileSync(schemaPath, 'utf-8')) : null
+      const hasHero = fs.existsSync(path.join(base, 'hero.png'))
+      // load per-type schema data
+      const schemasDir = path.join(base, 'schemas')
+      let typed: Record<string, any> = {}
+      if (fs.existsSync(schemasDir)) {
+        const files = fs.readdirSync(schemasDir).filter(f=>f.endsWith('.json'))
+        for (const f of files) {
+          const type = f.replace(/\.json$/, '')
+          typed[type] = JSON.parse(fs.readFileSync(path.join(schemasDir, f), 'utf-8'))
+        }
       }
+      return { meta, schema, hasHero, slug, typed }
+    } catch {
+      // Fall through to Supabase check
     }
-    return { meta, schema, hasHero, slug, typed }
-  } catch {
-    return null
   }
+  
+  // If filesystem read failed or on Vercel, try Supabase
+  try {
+    const mark = await getMark(slug)
+    if (mark) {
+      // Convert database mark to the same format as filesystem read
+      const meta = {
+        headline: mark.headline || mark.title,
+        sub: mark.sub || mark.description || '',
+        name: mark.title,
+        ...(mark.metadata || {})
+      }
+      
+      const schema = mark.schema_data || {
+        nav: [],
+        features: [],
+        pricing: [],
+        integrations: [],
+        testimonials: [],
+        faq: []
+      }
+      
+      // Check if hero image exists (from metadata)
+      const hasHero = !!(mark.hero_image_url || mark.metadata?.heroImage?.url || mark.metadata?.heroImage?.b64)
+      
+      // Extract typed schemas from metadata if available
+      const typed: Record<string, any> = {}
+      if (mark.metadata?.typed) {
+        Object.assign(typed, mark.metadata.typed)
+      }
+      
+      return { meta, schema, hasHero, slug, typed }
+    }
+  } catch (err) {
+    console.error('Error loading mark from database:', err)
+  }
+  
+  return null
 }
 
 function JSONLDScript({objs}:{objs:any[]}) {
@@ -43,21 +87,23 @@ function JSONLDScript({objs}:{objs:any[]}) {
   return (<script type="application/ld+json" dangerouslySetInnerHTML={{__html:j}} />)
 }
 
-function SectionHero({slug, meta}:{slug:string, meta:any}) {
+function SectionHero({slug, meta, heroImage}:{slug:string, meta:any, heroImage?:string}) {
   return (
     <section className="space-y-4">
       <h1 className="text-4xl font-semibold" style={{background: tokens.gradients.brand, WebkitBackgroundClip: 'text', color: 'transparent'}}>
         {meta.headline}
       </h1>
       <p className="text-neutral-400">{meta.sub}</p>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/symbols/${slug}/hero.png`} alt="hero" className="w-full rounded-xl border border-white/10"/>
+      {heroImage && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={heroImage} alt="hero" className="w-full rounded-xl border border-white/10"/>
+      )}
     </section>
   )
 }
 
-export default function SymbolPage({ params }: { params: { slug: string }}) {
-  const data = readSymbol(params.slug)
+export default async function SymbolPage({ params }: { params: { slug: string }}) {
+  const data = await readSymbol(params.slug)
   if (!data) return (
     <main className="min-h-dvh p-6">
       <div className="max-w-3xl mx-auto space-y-4">
@@ -114,7 +160,17 @@ export default function SymbolPage({ params }: { params: { slug: string }}) {
         </div>
       </header>
       <div className="max-w-5xl mx-auto p-6 space-y-12">
-        {data.hasHero && <SectionHero slug={data.slug} meta={data.meta} />}
+        {data.hasHero && (() => {
+          // Determine hero image source: from filesystem or base64 from database
+          let heroImageSrc = `/symbols/${data.slug}/hero.png`
+          // Check if we have base64 image data in metadata (from database)
+          if (data.meta?.heroImage?.b64) {
+            heroImageSrc = `data:image/png;base64,${data.meta.heroImage.b64}`
+          } else if (data.meta?.heroImage?.url) {
+            heroImageSrc = data.meta.heroImage.url
+          }
+          return <SectionHero slug={data.slug} meta={data.meta} heroImage={heroImageSrc} />
+        })()}
         {features.length>0 && (
           <section id="features" className="grid sm:grid-cols-2 gap-4">
             {features.map((f:any,i:number)=>(

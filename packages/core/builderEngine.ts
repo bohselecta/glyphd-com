@@ -157,7 +157,14 @@ export async function composeAndBuild(prompt: string, symbolName: string, model=
     logs.push(`Symbol saved: ${symbol.slug}`)
 
     logs.push('Packaging project plan…')
-    return { logs, heroImage, copy, symbol, mappedSchemas: mapping.schemas }
+    return { 
+      logs, 
+      heroImage, 
+      copy, 
+      symbol, 
+      mappedSchemas: mapping.schemas,
+      schema: { nav, features, pricing }
+    }
   } catch (err:any) {
     logs.push('Error during build: ' + err.message)
     return { logs }

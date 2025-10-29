@@ -38,9 +38,9 @@ export async function POST(req: Request) {
             mappedSchemas: result.mappedSchemas || []
           },
           schema_data: {
-            nav: [],
-            features: [],
-            pricing: [],
+            nav: result.schema?.nav || [],
+            features: result.schema?.features || [],
+            pricing: result.schema?.pricing || [],
             mappedSchemas: result.mappedSchemas || []
           },
           private: false,

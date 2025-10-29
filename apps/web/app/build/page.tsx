@@ -74,7 +74,7 @@ function BuildContent() {
         
         // Redirect after a moment
         setTimeout(() => {
-          router.push(`/m/${data.symbol.slug}`)
+          router.push(`/s/${data.symbol.slug}`)
         }, 2000)
       } else {
         const errorMsg = data.message || data.error || 'Unknown error'
