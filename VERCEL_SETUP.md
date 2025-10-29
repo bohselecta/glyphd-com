@@ -46,10 +46,14 @@ npm install
 Add these in the Environment Variables section:
 
 ```
-IMAGE_GEN_API_KEY=9ZzUkgeqUZXZLC0ZRibcUkN8NZyTmyjH
-ZAI_API_KEY=c8a73088afce45689a67bf2491fd112b.3Da1vaONCtsVbUpR
+IMAGE_GEN_API_KEY=your-deepinfra-api-key
+ZAI_API_KEY=your-zai-glm-coding-plan-api-key
 NEXT_PUBLIC_BASE_URL=https://your-app.vercel.app
 ```
+
+**Note:** 
+- `IMAGE_GEN_API_KEY`: Get from [DeepInfra dashboard](https://deepinfra.com) - used for FLUX-1-dev image generation
+- `ZAI_API_KEY`: Get from z.ai GLM Coding Plan dashboard - used for code generation and copy
 
 **Optional** (if using Supabase):
 ```

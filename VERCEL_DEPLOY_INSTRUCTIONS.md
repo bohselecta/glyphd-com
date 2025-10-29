@@ -37,8 +37,11 @@ IMAGE_GEN_API_KEY=your-image-gen-key
 4. Copy "anon public" key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ### How to get API keys:
-- **ZAI_API_KEY**: From Z.ai dashboard
-- **IMAGE_GEN_API_KEY**: From DeepInfra dashboard
+- **ZAI_API_KEY**: From z.ai GLM Coding Plan dashboard (get your API key from z.ai)
+- **IMAGE_GEN_API_KEY**: From DeepInfra dashboard (required for FLUX-1-dev image generation)
+  - Sign up at https://deepinfra.com
+  - Go to API section to get your access token
+  - This key is used for generating images with `black-forest-labs/FLUX-1-dev`
 
 ---
 
