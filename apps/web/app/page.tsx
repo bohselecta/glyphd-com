@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { MakeButton, PlanButton } from '../components/buttons'
-import OrbBackground from '../components/OrbBackground'
+import Orb from '../components/Orb'
 
 interface Mark {
   slug: string
@@ -60,8 +60,18 @@ export default function Home() {
 
   return (
     <main className="min-h-dvh relative">
-      {/* Orb Background */}
-      <OrbBackground />
+      {/* Background with Orb */}
+      <div className="fixed inset-0 -z-10">
+        <div className="w-full h-full relative">
+          <Orb
+            hoverIntensity={0.5}
+            rotateOnHover={true}
+            hue={220}
+            forceHoverState={false}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60"></div>
+      </div>
       
       {/* Header */}
       <header className="border-b border-white/10 relative z-10">
