@@ -62,7 +62,6 @@ export default function Home() {
     <main className="min-h-dvh relative">
       {/* Hyperspeed background */}
       <div className="fixed inset-0 -z-10">
-        <div id="lights" className="w-full h-full"></div>
         <Hyperspeed
           effectOptions={{
             onSpeedUp: () => {},
