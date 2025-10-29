@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { MakeButton, PlanButton } from '../components/buttons'
-import LetterGlitch from '../components/backgrounds/LetterGlitch'
+import OrbBackground from '../components/OrbBackground'
 
 interface Mark {
   slug: string
@@ -60,19 +60,11 @@ export default function Home() {
 
   return (
     <main className="min-h-dvh relative">
-      {/* Background with Letter Glitch */}
-      <div className="fixed inset-0 -z-10">
-        <LetterGlitch
-          glitchColors={['#2b4539', '#61dca3', '#61b3dc', '#FF2DAA']}
-          glitchSpeed={80}
-          centerVignette={false}
-          outerVignette={false}
-          smooth={true}
-        />
-      </div>
+      {/* Orb Background */}
+      <OrbBackground />
       
       {/* Header */}
-      <header className="border-b border-white/10 relative z-10 bg-black/60 backdrop-blur-md">
+      <header className="border-b border-white/10 relative z-10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="glyphd" className="h-6" />
