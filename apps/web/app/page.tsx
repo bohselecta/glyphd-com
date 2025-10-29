@@ -66,7 +66,7 @@ export default function Home() {
           effectOptions={{
             onSpeedUp: () => {},
             onSlowDown: () => {},
-            distortion: 'turbulentDistortion',
+            distortion: 'deepDistortion',
             length: 400,
             roadWidth: 10,
             islandWidth: 2,
