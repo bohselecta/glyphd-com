@@ -12,6 +12,7 @@ export interface BuildResult {
   copy?: { headline: string, sub: string }
   symbol?: { slug: string, path: string }
   mappedSchemas?: string[]
+  schema?: { nav?: any[], features?: any[], pricing?: any[] }
 }
 
 function craftImagePrompt(appPrompt: string, schemas: string[]) {
