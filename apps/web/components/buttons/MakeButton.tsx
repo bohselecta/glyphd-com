@@ -42,6 +42,16 @@ export const MakeButton = React.forwardRef<HTMLButtonElement, Props>(
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+            <filter id={`dropshadow-make-${gid}`} x="-50%" y="-50%" width="200%" height="200%">
+              <feOffset in="SourceAlpha" dx="0" dy="2" result="offset" />
+              <feGaussianBlur in="offset" stdDeviation="2" result="blur" />
+              <feFlood floodColor="rgba(0,0,0,0.4)" result="color" />
+              <feComposite in="color" in2="blur" operator="in" result="shadow" />
+              <feMerge>
+                <feMergeNode in="shadow" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
 
           {/* pill */}
@@ -52,7 +62,7 @@ export const MakeButton = React.forwardRef<HTMLButtonElement, Props>(
           {/* send icon */}
           <g
             transform="translate(25,24) scale(0.10) translate(-84, -109)"
-            filter={`url(#glow-make-${gid})`}
+            filter={`url(#dropshadow-make-${gid})`}
           >
             <path
               fill="white"
@@ -70,6 +80,7 @@ export const MakeButton = React.forwardRef<HTMLButtonElement, Props>(
             fontWeight="600"
             fill="white"
             letterSpacing=".3px"
+            filter={`url(#dropshadow-make-${gid})`}
           >
             {label}
           </text>
