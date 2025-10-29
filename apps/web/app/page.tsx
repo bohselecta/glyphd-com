@@ -64,9 +64,9 @@ export default function Home() {
       <div className="fixed inset-0 -z-10">
         <div className="w-full h-full relative">
           <Orb
-            hoverIntensity={0.5}
+            hoverIntensity={3.55}
             rotateOnHover={true}
-            hue={220}
+            hue={0}
             forceHoverState={false}
           />
         </div>
