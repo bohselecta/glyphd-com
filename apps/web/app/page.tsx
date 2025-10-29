@@ -72,7 +72,7 @@ export default function Home() {
       </div>
       
       {/* Header */}
-      <header className="border-b border-white/10 relative z-10">
+      <header className="border-b border-white/10 relative z-10 bg-black/60 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="glyphd" className="h-6" />
