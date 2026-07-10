@@ -1,100 +1,29 @@
-# Glyphd — Make Your Mark
+# glyphd-com (ARCHIVED)
 
-AI-powered symbol builder for creative apps, brands, and products.
+> **This repo is deprecated.** Canonical Glyphd lives in [`bohselecta/glyphd-registry`](https://github.com/bohselecta/glyphd-registry) — the **public proof ledger** at glyphd.com.
 
-## Quick Start
+---
+
+## What Glyphd is (2026 canon)
+
+**Glyphd** is not an interaction lab or symbol builder. It is the **authoritative registry** of what the house ships — honest app status, manifests, and **receipts**.
+
+- **ZEKE** = proprietary house intelligence (internal)
+- **POLYGLYPH** = flagship workstation
+- **ZekeChat** = premium web terminal into ZEKE
+- **AIVA** = separate education brand
+
+Canon: [`bohselecta/command-center`](https://github.com/bohselecta/command-center) → `Master Vision Results/11_EXECUTION_ROADMAP.md`
+
+---
+
+## This archive
+
+Historical Next.js site prototype. Do not deploy for registry purposes. Use `glyphd-registry` monorepo.
 
 ```bash
-# Install dependencies
-cd apps/web
-npm install
-
-# Run locally
-npm run dev
-
-# Visit http://localhost:5173
+# Canonical setup
+git clone https://github.com/bohselecta/glyphd-registry.git
+cd glyphd-registry
+pnpm install && pnpm build
 ```
-
-## Deployment to Vercel
-
-### Requirements
-- Node.js 18+ 
-- Vercel account
-
-### Setup Steps
-
-1. **Clone repository**
-```bash
-git clone https://github.com/bohselecta/glyphd-com.git
-cd glyphd-com
-```
-
-2. **Install dependencies**
-```bash
-cd apps/web
-npm install
-```
-
-3. **Configure Vercel**
-   - Connect GitHub repo to Vercel
-   - **Set Root Directory:** `apps/web`
-   - Add environment variables:
-     - `IMAGE_GEN_API_KEY`
-     - `ZAI_API_KEY`
-     - `NEXT_PUBLIC_SUPABASE_URL` (optional)
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional)
-
-4. **Deploy**
-   - Vercel will auto-deploy on push
-   - Or click "Deploy" in dashboard
-
-## Project Structure
-
-```
-glyphd-com/
-├── apps/
-│   └── web/          # Next.js app (deploy this)
-├── packages/         # Shared modules
-│   ├── ai/          # AI integration
-│   ├── core/        # Builder engine
-│   └── deployer/    # File writer
-├── scripts/          # Utilities
-└── supabase/        # Database schema
-
-```
-
-## Features
-
-- **Demo Mode** - Test without database setup
-- **Auth** - Supabase magic link authentication
-- **Builder** - AI-powered mark generation
-- **Feed** - Community showcase
-- **Real-time** - Collaboration features
-
-## Environment Variables
-
-For local development, create `apps/web/keys/keys.json`:
-
-```json
-{
-  "IMAGE_GEN_API_KEY": "your-deepinfra-key",
-  "ZAI_API_KEY": "your-zai-key"
-}
-```
-
-For production on Vercel, add these in dashboard:
-- `IMAGE_GEN_API_KEY` - DeepInfra API key
-- `ZAI_API_KEY` - Z.ai API key
-- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anon key
-
-## Documentation
-
-- [Setup Guide](./SETUP.md)
-- [Deployment](./DEPLOYMENT.md)
-- [Demo Mode](./DEMO_MODE.md)
-- [Auth Setup](./SUPABASE_AUTH_SETUP.md)
-
-## License
-
-Private
